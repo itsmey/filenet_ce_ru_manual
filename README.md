@@ -8,6 +8,7 @@
 ## Сокращения
 
 **CE** - IBM FileNet Content Engine
+**API** - application programming interface
 
 ## Соответствие между английскими и русскими терминами
 
