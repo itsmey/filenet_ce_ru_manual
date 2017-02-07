@@ -7,15 +7,20 @@
 
 ## Сокращения
 
-[**CE**] - IBM FileNet Content Engine
+**CE** - IBM FileNet Content Engine
 
 ## Соответствие между английскими и русскими терминами
 
 *Marking set* - набор маркировок
+
 *Object store* - хранилище объектов
+
 *Property* - свойство
+
 *Property definition* - определение свойства
+
 *Property description* - описание свойства
+
 *Property template* - шаблон свойства
 
 ## Литература и ссылки
