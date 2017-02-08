@@ -3,11 +3,20 @@
 - [Сокращения](#сокращения)
 - [Соответствие между английскими и русскими терминами](#соответствие-между-английскими-и-русскими-терминами)
 - [Литература и ссылки](#литература-и-ссылки)
-- [Введение](#введение)
+- [Для кого это руководство](#для-кого-это-руководство)
+
+- [Соединение](connection.md)
+- [Основные типы](types.md)
+- [Фабричные методы](instance_methods.md)
+- [Работа с объектами](objects.md)
+- [Работа со свойствами](properties.md)
+- [Работа с содержимым](content.md)
+- [SQL-запросы](properties.md)
 
 ## Сокращения
 
 **CE** - IBM FileNet Content Engine
+
 **API** - application programming interface
 
 ## Соответствие между английскими и русскими терминами
@@ -31,6 +40,6 @@
 - [IBM FileNet P8 Platform V5.2.1 documentation](http://www.ibm.com/support/knowledgecenter/en/SSNW2F_5.2.1/com.ibm.p8toc.doc/welcome_p8.htm)
 - [Content Platform Engine](http://www.ibm.com/support/knowledgecenter/ru/SSNW2F_5.2.1/com.ibm.p8.sysoverview.doc/p8sov108.htm)
 
-## Введение
+## Для кого это руководство
 
 Это руководство предназначено в первую очередь для русскоязычных программистов, которые только начинают работу с CE.
