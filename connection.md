@@ -53,3 +53,41 @@ try {
 
 ## Connection
 
+Интерфейс [Connection](https://www.ibm.com/support/knowledgecenter/en/SSNW2F_5.1.0/com.ibm.p8.ce.dev.java.doc/com/filenet/api/core/Connection.html) представляет логическое соединение с CE. Для получения объекта Connection используется один из двух методов фабричного класса Factory.Connection:
+
+`public static Connection getConnection( java.lang.String uri)`
+`public static Connection getConnection( java.lang.String uri, ConfigurationParameters parameters)`
+
+Первый метод создаёт соединение с параметрами по умолчанию.
+
+## UserContext
+
+Класс [UserContext](https://www.ibm.com/support/knowledgecenter/SSNW2F_5.2.1/com.ibm.p8.ce.dev.java.doc/com/filenet/api/util/UserContext.html) используется для установки локали и параметров аутентификации. Эта информация подставляется в запросы к серверу CE, которые отправляет текущий поток (т.е. поток, с которым связан объект UserContext). 
+Для каждого потока имеется свой стек из объектов Subject (JAAS). Также предоставляется возможность работать с внешним (ambient) JAAS-субъектом. В этом случае, внутренний стек игнорируется.
+
+Основные методы:
+
+`static javax.security.auth.Subject createSubject(Connection conn, java.lang.String user, java.lang.String password, java.lang.String optionalJAASStanzaName)`
+Создать субъект средствами JAAS. Последний параметр можно указать null, в этом случае stanza будет «FileNetP8»
+
+`static UserContext get()`
+Получить объект UserContext, связанный с текущим потоком
+	
+`javax.security.auth.Subject getSubject()`
+Получить объект Subject, связанный с текущим потоком
+
+`javax.security.auth.Subject popSubject()`
+Извлечь из стека текущий активный SUbject и сделать активным предыдущий SUbject
+
+`void pushSubject(javax.security.auth.Subject sub)`
+Поместить sub на вершину стека
+
+`java.util.Locale getLocale()`
+Получить текущую локаль для данного контекста
+
+`void setLocale(java.util.Locale locale)`
+Установить локаль в данном контексте
+
+
+
+
