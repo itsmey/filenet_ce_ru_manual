@@ -67,26 +67,15 @@ try {
 
 Основные методы:
 
-`static javax.security.auth.Subject createSubject(Connection conn, java.lang.String user, java.lang.String password, java.lang.String optionalJAASStanzaName)`
- Создать субъект средствами JAAS. Последний параметр можно указать null, в этом случае stanza будет «FileNetP8»
-
-`static UserContext get()`
-Получить объект UserContext, связанный с текущим потоком
-	
-`javax.security.auth.Subject getSubject()`
-Получить объект Subject, связанный с текущим потоком
-
-`javax.security.auth.Subject popSubject()`
-Извлечь из стека текущий активный SUbject и сделать активным предыдущий SUbject
-
-`void pushSubject(javax.security.auth.Subject sub)`
-Поместить sub на вершину стека
-
-`java.util.Locale getLocale()`
-Получить текущую локаль для данного контекста
-
-`void setLocale(java.util.Locale locale)`
-Установить локаль в данном контексте
+метод | что делает
+------------ | -------------
+`static javax.security.auth.Subject createSubject(Connection conn, java.lang.String user, java.lang.String password, java.lang.String optionalJAASStanzaName)` | Создать субъект средствами JAAS. Последний параметр можно указать null, в этом случае stanza будет «FileNetP8»
+`static UserContext get()` | Получить объект UserContext, связанный с текущим потоком
+`javax.security.auth.Subject getSubject()` | Получить объект Subject, связанный с текущим потоком
+`javax.security.auth.Subject popSubject()` | Извлечь из стека текущий активный SUbject и сделать активным предыдущий SUbject
+`void pushSubject(javax.security.auth.Subject sub)` | Поместить sub на вершину стека
+`java.util.Locale getLocale()` | Получить текущую локаль для данного контекста
+`void setLocale(java.util.Locale locale)` | Установить локаль в данном контексте
 
 
 
