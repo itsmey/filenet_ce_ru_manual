@@ -56,6 +56,7 @@ try {
 Интерфейс [Connection](https://www.ibm.com/support/knowledgecenter/en/SSNW2F_5.1.0/com.ibm.p8.ce.dev.java.doc/com/filenet/api/core/Connection.html) представляет логическое соединение с CE. Для получения объекта Connection используется один из двух методов фабричного класса Factory.Connection:
 
 `public static Connection getConnection( java.lang.String uri)`
+
 `public static Connection getConnection( java.lang.String uri, ConfigurationParameters parameters)`
 
 Первый метод создаёт соединение с параметрами по умолчанию.
