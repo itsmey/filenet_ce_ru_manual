@@ -21,6 +21,8 @@
 
 **API** - application programming interface
 
+**GCD** - global configuration database
+
 ## Соответствие между английскими и русскими терминами
 
 *Marking set* - набор маркировок
