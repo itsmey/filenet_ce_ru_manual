@@ -148,4 +148,4 @@ Connection conn = Factory.Connection.getConnection(uri);
 
 возвращает объект [ExceptionCode](https://www.ibm.com/support/knowledgecenter/en/SSNW2F_5.0.0/com.ibm.p8.ce.dev.java.doc/com/filenet/api/exception/ExceptionCode.html). 
 
-Неинстанцируемый класс ExceptionCode перечисляет все возможные причины для возникновеня исключения EngineRuntimeException.
+Неинстанцируемый класс ExceptionCode перечисляет все возможные причины для возникновения исключения EngineRuntimeException.
