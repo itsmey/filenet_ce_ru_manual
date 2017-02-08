@@ -68,7 +68,7 @@ try {
 Основные методы:
 
 `static javax.security.auth.Subject createSubject(Connection conn, java.lang.String user, java.lang.String password, java.lang.String optionalJAASStanzaName)`
-Создать субъект средствами JAAS. Последний параметр можно указать null, в этом случае stanza будет «FileNetP8»
+ Создать субъект средствами JAAS. Последний параметр можно указать null, в этом случае stanza будет «FileNetP8»
 
 `static UserContext get()`
 Получить объект UserContext, связанный с текущим потоком
