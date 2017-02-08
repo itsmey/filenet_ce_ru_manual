@@ -136,7 +136,7 @@ Connection conn = Factory.Connection.getConnection(uri);
 Существует несколько способов получить объект ObjectStore:
 * Создание нового хранилища – Factory.ObjectStore.createInstance
 * Получение хранилища по ID или имени: Factory.ObjectStore.fetchInstance и Factory.ObjectStore.getInstance
-* Если есть доступ к объекту-подклассу RepositoryObject – возвращаемое значение метода getObjectStore()
+* Если есть доступ к объекту RepositoryObject – возвращаемое значение метода getObjectStore()
 
 *TODO* Методы
 
