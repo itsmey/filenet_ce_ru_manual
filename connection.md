@@ -131,14 +131,27 @@ Connection conn = Factory.Connection.getConnection(uri);
 
 ## ObjectStore
 
-Интерфейс [ObjectStore](https://www.ibm.com/support/knowledgecenter/SSGLW6_5.2.0/com.ibm.p8.ce.dev.java.doc/com/filenet/api/core/class-use/ObjectStore.html) предоставляет доступ к хранилищу объектов. Хранилище объектов – база данных, содержащая классы, объекты и метаданные. В пределах домена логически разделённые данные могут храниться в разных хранилищах объектов.
+Интерфейс [ObjectStore](https://www.ibm.com/support/knowledgecenter/SSGLW6_5.2.0/com.ibm.p8.ce.dev.java.doc/com/filenet/api/core/ObjectStore.html) предоставляет доступ к хранилищу объектов. Хранилище объектов – база данных, содержащая классы, объекты и метаданные. В пределах домена логически разделённые данные могут храниться в разных хранилищах объектов.
 
 Существует несколько способов получить объект ObjectStore:
 * Создание нового хранилища – Factory.ObjectStore.createInstance
 * Получение хранилища по ID или имени: Factory.ObjectStore.fetchInstance и Factory.ObjectStore.getInstance
 * Если есть доступ к объекту RepositoryObject – возвращаемое значение метода getObjectStore()
 
-*TODO* Методы
+Некоторые методы:
+
+метод | что делает
+------------ | -------------
+`ChoiceListSet get_ChoiceLists()`|Получить списки выбора (объекты ChoiceList), принадлежащие данному хранилищу
+`ClassDescriptionSet get_ClassDescriptions()` |Получить описания классов, определённых в хранилище
+`Domain get_Domain() `|Получить домен, в котором расположено хранилище
+`java.lang.String get_Name() `|Получить локализованное имя хранилища
+`Id get_ObjectStoreId() `|Получить Id хранилища
+`PropertyTemplateSet get_PropertyTemplates() `|Получить шаблоны свойств (объекты PropertyTemplate), принадлежащие хранилищу
+`ClassDefinitionSet get_RootClassDefinitions() `|Получить определения классов верхнего уровня (т.е. классов, у которых нет родительского класса. Сюда входят базовые Containable-классы Document, Folder, CustomObject, а также служебные классы, такие как PropertyTemplate или ChoiceList)
+`Folder get_RootFolder() `| Получить корневую папку ("/")
+
+*Примечание: поскольку методы, начинающиеся с get_ и set_, являются геттерами и сеттерами некоего свойства, они часто представлены парами. В списке указаны только методы get_.*
 
 ## EngineRuntimeException
 
