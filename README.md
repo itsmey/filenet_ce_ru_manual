@@ -37,6 +37,12 @@
 
 *Property template* - шаблон свойства
 
+*Class description* - описание класса
+
+*Class definition* - определение класса
+
+*Choice list* - список выбора
+
 ## Литература и ссылки
 
 - *Wei-Dong Zhu and others. IBM FileNet P8 Platform and Architecture*
