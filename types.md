@@ -31,3 +31,60 @@
 * [ContentElement](https://www.ibm.com/support/knowledgecenter/en/SSNW2F_5.2.0/com.ibm.p8.ce.dev.java.doc/com/filenet/api/core/ContentElement.html). Базовый класс для элементов содержимого, которые могут приндалежать объектам Document или Annotation
 * [Relationship](https://www.ibm.com/support/knowledgecenter/en/SSNW2F_5.2.0/com.ibm.p8.ce.dev.java.doc/com/filenet/api/core/Relationship.html)
 * [VersionSeries](https://www.ibm.com/support/knowledgecenter/en/SSNW2F_5.2.0/com.ibm.p8.ce.dev.java.doc/com/filenet/api/core/VersionSeries.html). Представляет набор версий Versionable-объекта 
+
+## com.filenet.api.meta
+
+* ClassDescription. Описание класса. Только для чтения
+* PropertyDescription. Базовый интерфейс для описаний свойств различных типов. Только для чтения
+* PropertyDescriptionDateTime. Описание свойства типа «Дата и время». Только для чтения
+
+## com.filenet.api.admin
+
+* ClassDefinition. Определение класса. Базовый интерфейс для DocumentClassDefinition и других
+* PropertyDefinitio. Базовый интерфейс для определения свойств различных типов
+* PropertyDefinitionDateTime. Определение свойства типа «Дата и время»
+* PropertyTemplate. Базовый интерфейс для шаблонов свойств. Шаблоны позволяют создавать однотипные определения свойств (PropertyDefinition) для разных классов
+* DirectoryConfiguration. Экземпляр конфигурации LDAP
+* PEConnectionPoint. ТОчка подключения к FileNet Process Engine	
+* ServerInstance. JVM, запущенная на сервере приложений
+* TableDefinition. Таблица БД хранилища объектов
+
+## com.filenet.api.security
+
+* User. Пользователь CE
+* Group. Группа, в которую могут быть добавлены пользователи CE
+* AccessPermission. Правило доступа, содержащее битовую маску. 
+* MarkingSet. Набор маркировок. Предназначен для управления правами доступа к объекту в зависимости от значения определённого свойства типа String.
+
+## com.filenet.api.query
+
+* SearchScope. Область поиска (чаще всего – в пределах одного ObjectStore). Содержит методы для извлечения объектов и данных.
+* RepositoryRow. Экземпляр набора свойств, получаемого при поиске. Располагает объектом Properties
+
+## com.filenet.api.collection
+
+* FolderSet. Коллекция объектов Folder
+* ContentElementList. Коллекция объектов ContentReference и ContentTransfer
+
+## com.filenet.api.events
+
+* FileEvent	
+* UnfileEvent	
+* EventAction	
+* InstanceSubscription	
+
+## com.filenet.api.property
+
+* Properties. Коллекция объектов Property
+* Property. Базовый интерфейс для свойств
+* PropertyDateTime. Свойство типа «Дата и время» мощности single
+* PropertyDateTimeList. Свойство типа «Дата и время» мощности list
+* PropertyFilter. Набор информации о том, какие свойства объекта CE нужно извлечь. Используется в таких операциях, как fetch и refresh
+
+## com.filenet.api.constants
+
+* AccessRight. Константы прав доступа (READ, WRITE и т.п.)
+* Cardinality. Мощность значения свойства (SINGLE, LIST)
+* DatabaseType. Тип используемой СУБД (DB2, ORACLE, …)
+* PropertyNames. Имена свойств
+* ReservationType. Тип резервации документа (COLLABORATIVE, EXCLUSIVE)
