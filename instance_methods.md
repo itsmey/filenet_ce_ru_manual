@@ -28,3 +28,5 @@
 `static Document fetchInstance(ObjectStore os, java.lang.String path, PropertyFilter filter)`|Получить объект по его расположению, с набором свойств, задаваемым PropertyFilter. Если PropertyFilter = null, извлекаются все свойства.
 `static Document getInstance(ObjectStore os, java.lang.String className, Id objectId)`|Получить экземпляр объекта по его ID.
 `static Document getInstance(ObjectStore os, java.lang.String className, java.lang.String path)`|Получить экземпляр объекта по его расположению.
+
+*Примечание: варианты методов getInstance() и fetchInstance() с расположением (Path) в качестве идетнификатора возможны только для Containable-объектов, к которым отностся объекты Document, Folder и CustomObject.*
