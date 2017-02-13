@@ -1,9 +1,9 @@
 # Руководство по IBM FileNet Content Engine (Java API)
 
+- [Для кого это руководство](#Для-кого-это-руководство)
 - [Сокращения](#Сокращения)
 - [Соответствие между английскими и русскими терминами](#Соответствие-между-английскими-и-русскими-терминами)
 - [Литература и ссылки](#Литература-и-ссылки)
-- [Для кого это руководство](#Для-кого-это-руководство)
 
 ### Содержание
 
@@ -15,9 +15,15 @@
 - [Работа с содержимым](content.md)
 - [SQL-запросы](properties.md)
 
+## Для кого это руководство
+
+Это руководство предназначено в первую очередь для русскоязычных программистов, которые только начинают работу с CE. 
+
 ## Сокращения
 
 **CE** - IBM FileNet Content Engine
+
+**PE** - IBM FileNet Process Engine
 
 **API** - application programming interface
 
@@ -50,6 +56,3 @@
 - [IBM FileNet P8 Platform V5.2.1 documentation](http://www.ibm.com/support/knowledgecenter/en/SSNW2F_5.2.1/com.ibm.p8toc.doc/welcome_p8.htm)
 - [Content Platform Engine](http://www.ibm.com/support/knowledgecenter/ru/SSNW2F_5.2.1/com.ibm.p8.sysoverview.doc/p8sov108.htm)
 
-## Для кого это руководство
-
-Это руководство предназначено в первую очередь для русскоязычных программистов, которые только начинают работу с CE.
