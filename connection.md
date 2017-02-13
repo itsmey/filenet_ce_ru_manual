@@ -155,10 +155,32 @@ Connection conn = Factory.Connection.getConnection(uri);
 
 ## EngineRuntimeException
 
-Класс [EngineRuntimeException](https://www.ibm.com/support/knowledgecenter/SSNW2F_5.0.0/com.ibm.p8.ce.dev.java.doc/com/filenet/api/exception/EngineRuntimeException.html) - основной класс непроверяемых (unchecked) исключений в CE. Метод 
+Класс [EngineRuntimeException](https://www.ibm.com/support/knowledgecenter/SSNW2F_5.0.0/com.ibm.p8.ce.dev.java.doc/com/filenet/api/exception/EngineRuntimeException.html) - единственный класс исключений в CE API. Оносится к исключениям времени выполнения (runtime), т.е. непроверяемым (unchecked). Каждый "пойманный" объект EngineRuntimeException содержит объект типа [ExceptionCode](https://www.ibm.com/support/knowledgecenter/en/SSNW2F_5.0.0/com.ibm.p8.ce.dev.java.doc/com/filenet/api/exception/ExceptionCode.html), представляющий причину ошибки. Метод 
 
 `ExceptionCode getExceptionCode()` 
 
-возвращает объект [ExceptionCode](https://www.ibm.com/support/knowledgecenter/en/SSNW2F_5.0.0/com.ibm.p8.ce.dev.java.doc/com/filenet/api/exception/ExceptionCode.html). 
+возвращает объект ExceptionCode.
 
-Неинстанцируемый класс ExceptionCode перечисляет все возможные причины для возникновения исключения EngineRuntimeException.
+### Пример кода
+
+Данный пример показывает, как обрабатвать исключения CE нескольких видов.
+
+```java
+try {
+    // что-то делаем
+}
+catch( EngineRuntimeException ex) {
+    ExceptionCode e = ex.getExceptionCode();
+    
+    if( e == ExceptionCode.E_OBJECT_NOT_FOUND ) {
+        // обрабатываем исключение "объект не найден"
+    }
+    else if ( e == ExceptionCode.E_NOT_UNIQUE )
+    {
+        // обрабатываем исключение "не уникален"
+    }
+    
+    // не можем обработать (неожиданное исключение). бросаем заново
+    throw ex;
+}
+```
