@@ -63,7 +63,7 @@ System.out.println(document2.get_Name() + ": " + document2.get_Id());
 Folder folder = Factory.Folder.fetchInstance(objectStore, "/Configuration/WS_OSMI/settings", null);
 ```
 
-## Редактирование свойств
+## Изменение свойств
 
 Свойства - это метаданные объекта. Свойства бывают нескольких типов, а также обладают мощностью, т.е. свойство может иметь одиночное значение (single-valued) или список значений (multi-valued).
 
@@ -83,7 +83,7 @@ for(Iterator<Property> iterator = properties.iterator(); iterator.hasNext();) {
 
 Для каждого возможного сочетания "тип-мощность" объекты Property и Properties имеют набор методов, возвращающих значение свойства (аргумент name - имя свойства - имеет тип String):
 
-Тип | Property | Properties
+Тип | Методы Property | Методы Properties
 ------------ | ------------- | -------------
 true/false | getBooleanListValue(), getBooleanValue() | getBooleanListValue(name), getBooleanValue(name)
 строка | getStringListValue(), getStringValue() | getStringListValue(name), getStringValue(name)
@@ -121,5 +121,7 @@ EngineObject | getEngineObjectValue() | getEngineObjectValue(name)
 `void removeFromCache(java.lang.String[] propertyNames)`|Удаляет свойства из локального кэша
 `int size()`|Возвращает количество свойств в коллекции
 
+### Получение значения свойства
+### Установка значения свойства
 
 ## Удаление
