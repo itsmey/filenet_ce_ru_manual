@@ -79,6 +79,8 @@ for(Iterator<Property> iterator = properties.iterator(); iterator.hasNext();) {
 }
 ```                
 
+Важно: метод getProperties() возвращает коллекцию свойств, находящихся в локальном кэше. 
+
 Для каждого возможного сочетания "тип-мощность" объекты Property и Properties имеют набор методов, возвращающих значение свойства (аргумент name - имя свойства - имеет тип String):
 
 Тип | Property | Properties
@@ -104,6 +106,20 @@ EngineObject | getEngineObjectValue() | getEngineObjectValue(name)
 `boolean isDirty() `|Возвращает, было ли значение свойства изменено с момента последнего сохранения.
 `boolean isSettable() `|Возвращает, может ли приложение устанавливать значение свойства.
 
+Методы Properties:
+
+Метод | Что делает
+------------ | -------------
+`Property get(java.lang.String propertyName)`|Получить побъект Property по имени свойства
+`java.lang.Object getObjectValue(java.lang.String propertyName)`|Возвращает значение свойства, приведённое к типу Object
+`boolean isDirty()`|Возвращает, было ли значение хотя бы одного свойства в коллекции изменено с момента последнего сохранения
+`boolean isPropertyPresent(java.lang.String propertyName)`|Возвращает, присутствует ли данное свойство в коллекции
+`java.util.Iterator iterator()`|Возвращает итератор
+`void putObjectValue(java.lang.String propertyName, java.lang.Object value)`|Добавляет новое свойство в коллекцию или перезаписывает существующее
+`void putValue(java.lang.String propertyName, XXXX value)`|Добавляет новое свойство в коллекцию или перезаписывает существующее. Метод имеет по варианту на каждую комбинацию "тип-мощность"
+`void removeFromCache(java.lang.String propertyName)`|Удаляет свойство из локального кэша
+`void removeFromCache(java.lang.String[] propertyNames)`|Удаляет свойства из локального кэша
+`int size()`|Возвращает количество свойств в коллекции
 
 
 ## Удаление
