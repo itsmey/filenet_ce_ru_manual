@@ -79,6 +79,30 @@ for(Iterator<Property> iterator = properties.iterator(); iterator.hasNext();) {
 }
 ```                
 
+Для каждого возможного сочетания "тип-мощность" объекты Property и Properties имеют набор методов, возвращающих значение свойства (аргумент name - имя свойства - имеет тип String):
+
+Тип | Property | Properties
+------------ | ------------- | -------------
+true/false | getBooleanListValue(), getBooleanValue() | getBooleanListValue(name), getBooleanValue(name)
+строка | getStringListValue(), getStringValue() | getStringListValue(name), getStringValue(name)
+массив байт | getBinaryListValue(), getBinaryValue() | getBinaryListValue(name), getBinaryValue(name)
+дата/время | getDateTimeListValue(), getDateTimeValue() | getDateTimeListValue(name), getDateTimeValue(name)
+ID | getIdListValue(), getIdValue() | getIdListValue(name), getIdValue(name)
+32-битное целое число | getInteger32ListValue(), getInteger32Value() | getInteger32ListValue(name), getInteger32Value(name)   
+64-битное число с плав. точкой | getFloat64ListValue(), getFloat64Value() | getFloat64ListValue(name), getFloat64Value(name)
+EngineObject | getEngineObjectValue() | getEngineObjectValue(name)
+
+Возвращаемые значения методов, в основном, соответствуют указанным типам (boolean, String, byte[], Date, Id, int, float, EngineObject).
+
+Методы Property:
+
+Метод | Что делает
+------------ | -------------
+`java.lang.Object getObjectValue()`|Возвращает значение свойства, приведённое к типу Object
+`java.lang.String getPropertyName()` |Возвращает имя свойства
+`PropertyState getState() `|Возвращает статус свойства
+`boolean isDirty() `|Возвращает, было ли значение свойства изменено с момента последнего сохранения.
+`boolean isSettable() `|Возвращает, может ли приложение устанавливать значение свойства.
 
 
 
