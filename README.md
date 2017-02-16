@@ -54,6 +54,8 @@
 
 *Property template* - шаблон свойства
 
+*Property filter* - фильтр свойств
+
 *Class description* - описание класса
 
 *Class definition* - определение класса
