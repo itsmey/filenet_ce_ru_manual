@@ -166,7 +166,7 @@ folder.save(RefreshMode.NO_REFRESH);
 ## Удаление
 
 Чтобы удалить объект, нужно
-* вызвать его метод delete(). Операция удаления добавится во внутренний список "ожидающих выполнения действий" (pending action) - это те действия, которые выполнятся при следующем коммите (вызове save())
+* вызвать его метод delete(). Операция удаления добавится во внутренний список "запланированных действий" (pending actions) - это те действия, которые выполнятся при следующем коммите (вызове save())
 * вызвать save(RefreshMode.NO_REFRESH). REFRESH не имеет смыл указывать, так как обновлять уже нечего
 
 ```java
@@ -174,3 +174,7 @@ CustomObject object= Factory.CustomObject.getInstance(objectStore, null, id);
 object.delete();
 object.save(RefreshMode.NO_REFRESH);
 ```
+
+### Удаление версионных объектов
+
+TODO
