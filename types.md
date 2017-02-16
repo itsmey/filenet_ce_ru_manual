@@ -16,7 +16,7 @@
 ### Интерфейсы
 
 * [EngineObject](https://www.ibm.com/support/knowledgecenter/en/SSNW2F_5.2.0/com.ibm.p8.ce.dev.java.doc/com/filenet/api/core/EngineObject.html). Базовый интерфейс всех объектов CE, необязательно принадлежащих ObjectStore
-* [RepositoryObject](https://www.ibm.com/support/knowledgecenter/en/SSNW2F_5.2.0/com.ibm.p8.ce.dev.java.doc/com/filenet/api/core/RepositoryObject.html). Базовый интерфейс для объектов CE, принадлежащих Object Store. Соответственно, определяет метод getObjectStore().
+* [RepositoryObject](https://www.ibm.com/support/knowledgecenter/en/SSNW2F_5.2.0/com.ibm.p8.ce.dev.java.doc/com/filenet/api/core/RepositoryObject.html). Базовый интерфейс для объектов CE, принадлежащих Object Store. Соответственно, объявляет метод getObjectStore().
 * DependentObject. Объекты, которые могут существовать только как составные части других объектов. Например, Объект PropertyDefinition может существовать только в рамках объекта ClassDefinition
 * [IndependentObject](https://www.ibm.com/support/knowledgecenter/en/SSNW2F_5.0.0/com.ibm.p8.ce.dev.java.doc/com/filenet/api/core/IndependentObject.html). Объекты, которые могут существовать независимо от других объектов
 * [IndependentlyPersistableObject](https://www.ibm.com/support/knowledgecenter/en/SSNW2F_5.0.0/com.ibm.p8.ce.dev.java.doc/com/filenet/api/core/IndependentlyPersistableObject.html). Независимые объекты, которые можно создавать, обновлять, удалять
