@@ -11,7 +11,7 @@
 - [Основные типы](types.md)
 - [Фабричные методы](instance_methods.md)
 - [Объекты и свойства](objects.md)
-- [Фильтры свойств](properties.md)
+- [Фильтры свойств](property_filters.md)
 - [Элементы содержимого](content.md)
 - [Запросы SQL](queries.md)
 - [Пакетные операции](batch.md)
