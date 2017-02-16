@@ -121,7 +121,46 @@ EngineObject | getEngineObjectValue() | getEngineObjectValue(name)
 `void removeFromCache(java.lang.String[] propertyNames)`|Удаляет свойства из локального кэша
 `int size()`|Возвращает количество свойств в коллекции
 
-### Получение значения свойства
-### Установка значения свойства
+### Получение и установка значений
+
+Предположим, что для нашего объекта определены два свойства: SingleStringProperty - строка и MultiDateTimeProperty - список дат. Рассмотрим, как можно читать и писать эти свойства.
+
+```java
+final String SINGLE_STRING_PROPERTY = "SingleStringProperty";
+final String MULTI_DATETIME_PROPERTY = "MultiDateTimeProperty";
+
+//получаем объект-папку по её расположению
+Folder folder = Factory.Folder.getInstance(objectStore, null, "/path/to/yout/folder");
+
+//заполняем коллекцию свойств выбранными
+folder.fetchProperties(new String[]{SINGLE_STRING_PROPERTY, MULTI_DATETIME_PROPERTY});
+
+//получаем коллекцию свойств
+Properties properties = folder.getProperties();
+
+//получаем значения
+String singleStringValue = properties.getStringValue(SINGLE_STRING_PROPERTY);
+DateTimeList multiDateTimeValues = properties.getDateTimeListValue(MULTI_DATETIME_PROPERTY);
+
+System.out.println("singleStringValue = " + singleStringValue);
+System.out.println("multiDateTimeValues = ");
+for (Iterator i = multiDateTimeValues.iterator(); i.hasNext(); ) {
+    System.out.println(i.next());
+}
+
+//перезаписываем значение single-valued свойства. здесь всё просто - вызываем один из методов putValue
+properties.putValue(SINGLE_STRING_PROPERTY, "some value");
+
+//прежде чем перезаписать multi-valued свойство, готовим объект-список - создаём и заполняем значениями
+DateTimeList dateTimeList = Factory.DateTimeList.createList();
+dateTimeList.add(new Date());
+dateTimeList.add(new Date());
+
+//теперь записываем данные
+properties.putValue(MULTI_DATETIME_PROPERTY, dateTimeList);
+
+//коммитим изменения на сервер CE
+folder.save(RefreshMode.NO_REFRESH);
+```
 
 ## Удаление
