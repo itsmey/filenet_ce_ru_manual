@@ -123,7 +123,7 @@ EngineObject | getEngineObjectValue() | getEngineObjectValue(name)
 
 ### Получение и установка значений
 
-Предположим, что для нашего объекта определены два свойства: SingleStringProperty - строка и MultiDateTimeProperty - список дат. Рассмотрим, как можно читать и писать эти свойства.
+Предположим, что для нашего объекта - пусть это будет Folder - определены два свойства: SingleStringProperty - строка и MultiDateTimeProperty - список дат. Рассмотрим, как можно читать и писать эти свойства.
 
 ```java
 final String SINGLE_STRING_PROPERTY = "SingleStringProperty";
@@ -164,3 +164,13 @@ folder.save(RefreshMode.NO_REFRESH);
 ```
 
 ## Удаление
+
+Чтобы удалить объект, нужно
+* вызвать его метод delete(). Операция удаления добавится во внутренний список "ожидающих выполнения действий" (pending action) - это те действия, которые выполнятся при следующем коммите (вызове save())
+* вызвать save(RefreshMode.NO_REFRESH). REFRESH не имеет смыл указывать, так как обновлять уже нечего
+
+```java
+CustomObject object= Factory.CustomObject.getInstance(objectStore, null, id);
+object.delete();
+object.save(RefreshMode.NO_REFRESH);
+```
