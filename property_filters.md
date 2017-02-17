@@ -6,6 +6,8 @@
 * `IndependentObject.refresh(PropertyFilter filter)`
 * `IndependentObject.fetchProperty(java.lang.String propertyName, PropertyFilter filter)`
 * `IndependentObject.fetchProperties(PropertyFilter filter)`
+* `IndependentObjectSet SearchScope.fetchObjects(SearchSQL searchSQL, java.lang.Integer pageSize, PropertyFilter filter, java.lang.Boolean continuable)`
+* `RepositoryRowSet SearchScope.fetchRows(SearchSQL searchSQL, java.lang.Integer pageSize, PropertyFilter filter, java.lang.Boolean continuable)`
 * `Factory.XXXX.fetchInstance(...)` - множество разновидностей
 
 Полный список можно посмотреть [здесь](https://www.ibm.com/support/knowledgecenter/SSNW2F_5.2.1/com.ibm.p8.ce.dev.java.doc/com/filenet/api/property/class-use/PropertyFilter.html).
@@ -52,11 +54,46 @@ document.save(RefreshMode.REFRESH, filter);
 * `FilterElement(java.lang.Integer maxRecursion,java.lang.Long maxSize,java.lang.Boolean levelDependents,FilteredPropertyType value,java.lang.Integer pageSize)` - извлечь свойства определённого типа. Тип указывается параметром [FilteredPropertyType](https://www.ibm.com/support/knowledgecenter/en/SSNW2F_5.1.0/com.ibm.p8.ce.dev.java.doc/com/filenet/api/constants/FilteredPropertyType.html)
 * FilterElement(java.lang.Integer maxRecursion,java.lang.Long maxSize,java.lang.Boolean levelDependents,java.lang.String value,java.lang.Integer pageSize) - извлечь свойства, имена которых указаны в параметре value. Если свойств несколько, имена разделяются пробелом
 
-Параметры, управляющие глубиной фильтрации:
+Параметры, управляющие фильтрацией:
 
-* **levelDependents**: A Boolean that specifies whether the recursion level to use when retrieving a dependent object is the same as that of the independent object to which it belongs (true) or one level deeper (false). 
-* **maxRecursion**: A zero-based Integer that specifies the maximum allowable recursion depth to use when retrieving property relationships. This attribute determines the level of depth at which property values are included. If unspecified, the default is zero.
-* **maxSize**: A Long that specifies the maximum size, in bytes, of content data that can be returned when properties that hold content data are retrieved. If the amount of content data held by retrieved properties exceeds this size, no content data is returned. If unspecified, the default is to return all content data, no matter how large. 
-* **pageSize**: An Integer that specifies the iterator page size for independent object sets returned by PropertyIndependentObjectSet properties. The iterator page size determines how many elements of an independent object set are retrieved during each fetch. If the page size is unspecified, by default the server uses the value of the QueryPageDefaultSize property of the ServerCacheConfiguration object (the default for this property is 500). If the page size exceeds the value of the QueryPageMaxSize property of the ServerCacheConfiguration object (the default for this property is 1000), the server uses the value of the QueryPageMaxSize property instead.
+* **levelDependents**. Флаг, указывающий, нужно ли при извлечении свойств зависимых объектов углубляться ещё на один уровень, по сравнению с независимыми. Если true, то не нужно.
+* **maxRecursion**. Глубина рекурсии при извлечении свойств. По умолчанию - 0, т.е. извлекаются свойства только "базового" объекта.
+* **maxSize**. Максимальный размер содержимого для свойств, обладающих содержимым. Если размер содержимого окажется больше, оно не будет получено вообще. По умолчанию - без ограничений.
+* **pageSize**. Параметр имеет отношение только к свойствам типа PropertyIndependentObjectSet. Задаёт размер страницы, т.е. то, сколько объектов извлекается за одно обращение.
 
+## Рекурсия
+
+Рекурсия может сократить число обращений ("round-trips") к БД. Смысл в том, что за одно обращение извлекаются свойства не только "базового" объекта, но и у объектов из его свойств, объектов из свойств этих объектов и т.д. (глубина рекурсии настраивается параметром maxRecursion).
+
+Например, нужно построить иерархию папок. Это делается за одно обращение к БД:
+
+```java
+PropertyFilter filter = new PropertyFilter();
+
+filter.addIncludeProperty(new FilterElement(99, null, null, PropertyNames.FOLDER_NAME, null));
+filter.addIncludeProperty(new FilterElement(99, null, null, PropertyNames.SUB_FOLDERS, null));
+
+Folder folder = Factory.Folder.fetchInstance(objectStore, "/", filter);
+
+inspectFolder(folder, "");
+```
+
+Функция inspectFolder() может выглядеть так:
+
+```java
+private static void inspectFolder(Folder f, String indent) {
+    FolderSet subFolders = f.get_SubFolders();
+    Iterator<Folder> iterator = subFolders.iterator();
+
+    System.out.println(indent + f.get_FolderName());
+
+    while (iterator.hasNext()) {
+        inspectFolder(iterator.next(), indent + "  ");
+    }
+}
+```
+
+### Дополнительные материалы
+
+* http://www.notonlyanecmplace.com/understand-the-filenet-property-filters/
 
