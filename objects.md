@@ -130,7 +130,7 @@ final String SINGLE_STRING_PROPERTY = "SingleStringProperty";
 final String MULTI_DATETIME_PROPERTY = "MultiDateTimeProperty";
 
 //получаем объект-папку по её расположению
-Folder folder = Factory.Folder.getInstance(objectStore, null, "/path/to/yout/folder");
+Folder folder = Factory.Folder.getInstance(objectStore, null, "/path/to/your/folder");
 
 //заполняем коллекцию свойств выбранными
 folder.fetchProperties(new String[]{SINGLE_STRING_PROPERTY, MULTI_DATETIME_PROPERTY});
