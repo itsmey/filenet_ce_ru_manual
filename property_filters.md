@@ -65,13 +65,15 @@ document.save(RefreshMode.REFRESH, filter);
 
 Рекурсия может сократить число обращений ("round-trips") к БД. Смысл в том, что за одно обращение извлекаются свойства не только "базового" объекта, но и у объектов из его свойств, объектов из свойств этих объектов и т.д. (глубина рекурсии настраивается параметром maxRecursion).
 
-Например, нужно построить иерархию папок. Это делается за одно обращение к БД:
+Например, нужно построить иерархию папок. Это делается за одно обращение к БД (в примере принята максимальная вложенность 99):
 
 ```java
+final int MAX_NESTING_LEVEL = 99;
+
 PropertyFilter filter = new PropertyFilter();
 
-filter.addIncludeProperty(new FilterElement(99, null, null, PropertyNames.FOLDER_NAME, null));
-filter.addIncludeProperty(new FilterElement(99, null, null, PropertyNames.SUB_FOLDERS, null));
+filter.addIncludeProperty(new FilterElement(MAX_NESTING_LEVEL, null, null, PropertyNames.FOLDER_NAME, null));
+filter.addIncludeProperty(new FilterElement(MAX_NESTING_LEVEL, null, null, PropertyNames.SUB_FOLDERS, null));
 
 Folder folder = Factory.Folder.fetchInstance(objectStore, "/", filter);
 
@@ -82,11 +84,11 @@ inspectFolder(folder, "");
 
 ```java
 private static void inspectFolder(Folder f, String indent) {
-    FolderSet subFolders = f.get_SubFolders();
-    Iterator<Folder> iterator = subFolders.iterator();
-
     System.out.println(indent + f.get_FolderName());
-
+    
+    FolderSet subFolders = f.get_SubFolders();
+    
+    Iterator<Folder> iterator = subFolders.iterator();
     while (iterator.hasNext()) {
         inspectFolder(iterator.next(), indent + "  ");
     }
