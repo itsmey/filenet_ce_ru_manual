@@ -52,7 +52,7 @@ document.save(RefreshMode.REFRESH, filter);
 Класс [FilterElement](https://www.ibm.com/support/knowledgecenter/SSNW2F_5.1.0/com.ibm.p8.ce.dev.java.doc/com/filenet/api/property/FilterElement.html) содержит информацию о том, что нужно включить в фильтр. Интересны только конструкторы:
 
 * `FilterElement(java.lang.Integer maxRecursion,java.lang.Long maxSize,java.lang.Boolean levelDependents,FilteredPropertyType value,java.lang.Integer pageSize)` - извлечь свойства определённого типа. Тип указывается параметром [FilteredPropertyType](https://www.ibm.com/support/knowledgecenter/en/SSNW2F_5.1.0/com.ibm.p8.ce.dev.java.doc/com/filenet/api/constants/FilteredPropertyType.html)
-* FilterElement(java.lang.Integer maxRecursion,java.lang.Long maxSize,java.lang.Boolean levelDependents,java.lang.String value,java.lang.Integer pageSize) - извлечь свойства, имена которых указаны в параметре value. Если свойств несколько, имена разделяются пробелом
+* `FilterElement(java.lang.Integer maxRecursion,java.lang.Long maxSize,java.lang.Boolean levelDependents,java.lang.String value,java.lang.Integer pageSize)` - извлечь свойства, имена которых указаны в параметре value. Если свойств несколько, имена разделяются пробелом
 
 Параметры, управляющие фильтрацией:
 
