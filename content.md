@@ -50,7 +50,7 @@ while ((line = reader.readLine()) != null)
 reader.close();
 ```
 
-### Через свойство ContentsElements
+### Через свойство ContentElements
 
 Свойство ContentElements содержит список элементов содержимого, будь то ContentReference или ContentTransfer. Использование ContentElements 
 
@@ -74,14 +74,15 @@ public static void main(String[] args)
       Соединение с CE для краткости опущено
     */
 
-    // приготовить фильтр свойств
+    // фильтр свойств
     PropertyFilter filter = new PropertyFilter();
     filter.addIncludeProperty(new FilterElement(null, null, null, "ContentElements", null));
 
-    // получить документ
+    // 1. запись содержимого в файл
+    // получаем документ
     Document d = Factory.Document.fetchInstance(objectStore, "/path/to/document1", filter);
 
-    // получить список элементов содержимого
+    // получаем список элементов содержимого
     ContentElementList elements = d.get_ContentElements();
 
     // пусть нам нужен первый в списке элемент
@@ -101,6 +102,7 @@ public static void main(String[] args)
     if( size != expected )
         System.err.println("Invalid content size retrieved");
 
+    // 2. пример работы с итератором
     // получаем другой документ и записываем все его элементы содержимого в файлы  
     d = Factory.Document.fetchInstance(objectStore, "/path/to/document2", filter);
     elements = d.get_ContentElements();
@@ -108,6 +110,32 @@ public static void main(String[] args)
         element = (ContentTransfer)i.next();
         writeContent(element.accessContentStream(),"element" + element.get_ElementSequenceNumber());
     }
+    
+    // 3. пример создания нового содержимого
+    // получаем третий документ и прикрепляем к нему данные первого документа
+    d = Factory.Document.fetchInstance(objectStore, "/path/to/document2", filter);
+    try {
+       InputStream is = new FileInputStream(filename);
+       elements = d.get_ContentElements();
+      
+       // создаём новый элемент ContentTransfer
+       element = Factory.ContentTransfer.createInstance(objectStore);
+       element.setCaptureSource(is);
+       element.setRetrievalName(filename);
+      
+       if (elements == null) {
+           // если содержимого нет, создаём список содержимого
+           elements = Factory.ContentElement.createList();
+       } 
+       
+       // добавляем элемент в список
+       elements.add(element)
+       
+       d.set_ContentElements(elements);
+       d.save(RefreshMode.REFRESH);
+   } catch (IOException e) {
+       e.printStackTrace();
+   }
 }
 
 public static Double writeContent(InputStream s, String filename) throws IOException {
