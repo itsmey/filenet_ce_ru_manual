@@ -113,7 +113,7 @@ public static void main(String[] args)
     
     // 3. пример создания нового содержимого
     // получаем третий документ и прикрепляем к нему данные первого документа
-    d = Factory.Document.fetchInstance(objectStore, "/path/to/document2", filter);
+    d = Factory.Document.fetchInstance(objectStore, "/path/to/document3", filter);
     try {
        InputStream is = new FileInputStream(filename);
        elements = d.get_ContentElements();
