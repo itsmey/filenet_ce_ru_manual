@@ -65,7 +65,11 @@ reader.close();
 3. Получить нужный элемент из списка методом get() либо использовать итератор для обхода списка
 4. Работать с элементом, приведя его к нужному типу (ContentReference или ContentTransfer)
 
-Пример работы с содержимым через ContentElements:
+Следующий пример состоит из трёх частей:
+
+1. Запись содержимого с номером 0 в файл
+2. Запись всех элементов содсодержимого в файлы
+3. Создание нового содержимого
 
 ```java
 public static void main(String[] args)
@@ -94,7 +98,7 @@ public static void main(String[] args)
     // получаем поток данных
     InputStream stream = element.accessContentStream();
 
-    // записываем данные в файл
+    // записываем данные в файл. реализацию writeContent() см. ниже
     Double size = writeContent(stream, filename);
 
     // проверяем, что было записано столько же байт, сколько составляет размер данных
@@ -132,7 +136,7 @@ public static void main(String[] args)
        elements.add(element)
        
        d.set_ContentElements(elements);
-       d.save(RefreshMode.REFRESH);
+       d.save(RefreshMode.NO_REFRESH);
    } catch (IOException e) {
        e.printStackTrace();
    }
