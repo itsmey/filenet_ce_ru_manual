@@ -10,7 +10,9 @@
 
 ### Классы
 
-* Batch и его подклассы RetrievingBatch и UpdatinhBatch
+* [Batch](https://www.ibm.com/support/knowledgecenter/en/SSNW2F_4.5.1/com.ibm.p8.doc/developer_help/content_engine_api/javadocs/com/filenet/api/core/Batch.html). [Пакетные операции](batch.md)
+  * [RetrievingBatch](https://www.ibm.com/support/knowledgecenter/en/SSNW2F_4.5.1/com.ibm.p8.doc/developer_help/content_engine_api/javadocs/com/filenet/api/core/RetrievingBatch.html). Пакетное получение
+  * [UpdatingBatch](https://www.ibm.com/support/knowledgecenter/en/SSNW2F_4.5.1/com.ibm.p8.doc/developer_help/content_engine_api/javadocs/com/filenet/api/core/UpdatingBatch.html). Пакетное обновление
 * фабричные классы Factory.XXXX
 
 ### Интерфейсы
