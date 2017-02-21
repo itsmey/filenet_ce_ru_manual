@@ -69,7 +69,7 @@ ub.updateBatch();
 1. Инстанцировать (createInstance() или getInstance()) объекты
 2. Создать объект RetrievingBatch - RetrievingBatch.createRetrievingBatchInstance()
 3. Добавить объекты - add()
-4. Запустить пакетное извлечение свойств - RetrieveBatch()
+4. Запустить пакетное извлечение свойств - retrieveBatch()
 5. Работать с объектами
 
 ### Пример
@@ -113,4 +113,4 @@ while (iterator1.hasNext()) {
 
 `java.util.List getBatchItemHandles(IndependentObject object)`,
 
-определённый в классе Batch, возвращает список элементов типа BatchItemHandle для объекта object. Если параметр object Равен null, метод возвращает список из всех имеющихся в пакете элементов BatchItemHandle.
+определённый в классе Batch, возвращает список элементов типа BatchItemHandle для объекта object. Если параметр object равен null, метод возвращает список из всех имеющихся в пакете элементов BatchItemHandle.
