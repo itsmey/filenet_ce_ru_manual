@@ -54,3 +54,63 @@ ub.updateBatch();
 ```
 
 ## Пакетное получение
+
+Рассмотрим методы RetrievingBatch:
+
+метод | что делает
+------------ | -------------
+`BatchItemHandle add(IndependentObject object, PropertyFilter filter)`|Добавляет объект в пакет. Параметр filter определяет, какие свойства нужно извлечь. Метод возвращает элемент пакета ([BatchItemHandle](https://www.ibm.com/support/knowledgecenter/en/SSNW2F_4.5.1/com.ibm.p8.doc/developer_help/content_engine_api/javadocs/com/filenet/api/core/BatchItemHandle.html)). Имея элемент пакета, можно узнать исключение, которое произошло при работе с данным объектом
+`static RetrievingBatch createRetrievingBatchInstance(Domain domain, RefreshMode refresh)`|Фабричный метод
+`boolean hasExceptions()`|Возвращает, есть ли в пакете элементы, при получении которых возникли исключения
+`void retrieveBatch()`|Запустить пакетную операцию
+
+Порядок действий:
+
+1. Инстанцировать (createInstance() или getInstance()) объекты
+2. Создать объект RetrievingBatch - RetrievingBatch.createRetrievingBatchInstance()
+3. Добавить объекты - add()
+4. Запустить пакетное извлечение свойств - RetrieveBatch()
+5. Работать с объектами
+
+### Пример
+
+```java
+Domain myDomain = objectStore.get_Domain();
+RetrievingBatch rb = RetrievingBatch.createRetrievingBatchInstance(myDomain);
+
+Document doc1 = Factory.Document.createInstance(objectStore, null);
+doc1.checkin(null, null);
+doc1.save(RefreshMode.NO_REFRESH);
+
+Document doc2 = Factory.Document.createInstance(objectStore, null);
+doc2.checkin(null, null);
+doc2.save(RefreshMode.NO_REFRESH);
+
+rb.add(doc1, null);  
+rb.add(doc2, null);  
+
+rb.retrieveBatch();
+```
+
+## Проверка исключений RertievingBatch
+
+При работе с RetrievingBatch надо уметь определить объекты, для которых выполнение операции закончилось с исключением. Для этого нужно обойти элементы пакета:
+
+```java
+Iterator iterator1 = rb.getBatchItemHandles(null).iterator();
+while (iterator1.hasNext()) {
+    BatchItemHandle obj = (BatchItemHandle) iterator1.next();
+    if (obj.hasException()) 
+    {
+        // отображаем сообщение
+        EngineRuntimeException thrown = obj.getException();
+        System.out.println("Exception: " + thrown.getMessage());
+    }
+}   
+```
+
+Метод 
+
+`java.util.List getBatchItemHandles(IndependentObject object)`,
+
+определённый в классе Batch, возвращает список элементов типа BatchItemHandle для объекта object. Если параметр object Равен null, метод возвращает список из всех имеющихся в пакете элементов BatchItemHandle.
