@@ -68,6 +68,10 @@
 
 *Marking set* - набор маркировок
 
+*Updating batch* - пакетное обновление
+
+*Retrieving batch* - пакетное получение
+
 ## Литература и ссылки
 
 - *Wei-Dong Zhu and others. IBM FileNet P8 Platform and Architecture*
