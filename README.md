@@ -42,6 +42,8 @@
 
 **SQL** - structured query language
 
+**URL** - uniform resource locator
+
 ## Соответствие между английскими и русскими терминами
 
 *Object store* - хранилище объектов
