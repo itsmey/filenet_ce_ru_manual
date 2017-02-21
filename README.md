@@ -68,7 +68,7 @@
 
 *Marking set* - набор маркировок
 
-*Updating batch* - пакетное обновление
+*Updating batch* - пакетное изменение
 
 *Retrieving batch* - пакетное получение
 
