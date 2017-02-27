@@ -53,3 +53,32 @@
 Чекин (minor)| 0.1 **Замещённая** |  0.2 **Промежуточная** |
 Чекаут, внесение изменений| 0.1 **Замещённая** | 0.2 **Промежуточная**|0.3 **Зарезервированная**
 Чекин (major)| 0.1 **Замещённая** | 0.2 **Замещённая**| 1.0 **Выпущенная**
+
+## Реализация в CE
+
+Версионные объекты имеют API [Versionable](https://www.ibm.com/support/knowledgecenter/en/SSGLW6_5.2.1/com.ibm.p8.ce.dev.java.doc/com/filenet/api/core/Versionable.html).
+
+TODO: методы Versionable
+
+Набор версий представлен интерфейсом [VersionSeries](https://www.ibm.com/support/knowledgecenter/en/SSGLW6_5.2.1/com.ibm.p8.ce.dev.java.doc/com/filenet/api/core/VersionSeries.html).
+
+TODO: методы VersionSeries
+
+### [Примеры кода](https://www.ibm.com/support/knowledgecenter/en/SSNW2F_5.2.0/com.ibm.p8.ce.dev.ce.doc/version_procedures.htm)
+
+#### Создание версии
+#### Удаление версии
+#### Отмена чекаута
+#### Работа с набором версий
+#### Удаление набора версий
+#### Свойства Versionable
+#### Повышение
+#### Понижение
+#### Блокирование свойств
+
+## Дополнительные материалы
+
+* [Versioning](https://www.ibm.com/support/knowledgecenter/SSNW2F_5.2.1/com.ibm.p8.sysoverview.doc/p8sov009.htm)
+* [Versioning properties](https://www.ibm.com/support/knowledgecenter/SSGLW6_5.2.0/com.ibm.p8.ce.admin.tasks.doc/docsandfolders/df_versioning_properties.htm)
+* [Versioning actions](https://www.ibm.com/support/knowledgecenter/SSNW2F_5.2.1/com.ibm.p8.ce.admin.tasks.doc/docsandfolders/df_versioning_actions.htm)
+
