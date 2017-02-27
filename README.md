@@ -74,6 +74,8 @@
 
 *Version series* - набор версий
 
+*Current version* - текущая  версия
+
 ## Литература и ссылки
 
 - *Wei-Dong Zhu and others. IBM FileNet P8 Platform and Architecture*
