@@ -15,7 +15,7 @@
 - [Элементы содержимого](content.md)
 - [Запросы SQL](queries.md)
 - [Пакетные операции](batch.md)
-- [Версионность](versioning.md)
+- [Версии](versioning.md)
 - [Отношения между объектами](relationships.md)
 - [Права доступа](permissions.md)
 
@@ -71,6 +71,8 @@
 *Updating batch* - пакетное изменение
 
 *Retrieving batch* - пакетное получение
+
+*Version series* - набор версий
 
 ## Литература и ссылки
 
