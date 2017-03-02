@@ -111,9 +111,56 @@
 `IndependentObject get_Reservation()`|Возвращает зарезервированную версию
 `VersionableSet get_Versions()`|Возвращает коллекцию версий
 
-### [Примеры кода](https://www.ibm.com/support/knowledgecenter/en/SSNW2F_5.2.0/com.ibm.p8.ce.dev.ce.doc/version_procedures.htm)
+### Примеры кода
 
 #### Создание версии
+
+```java
+// 1. С помощью Versionable
+Document doc = Factory.Document.getInstance(os, ClassNames.DOCUMENT, new Id("{D6DCDE1F-EF67-4A2E-9CDB-391999BCE8E5}") );
+
+// делаем чекаут
+doc.checkout(ReservationType.OBJECT_STORE_DEFAULT, null, null, null);
+// зараезервир-я версия не создана, пока изменения не будут закоммичены на сервер. делаем коммит
+doc.save(RefreshMode.REFRESH);          
+
+// получаем зарезервированную версию
+Document reservation = (Document) doc.get_Reservation();
+
+/* здесь работаем с reservation
+   ...
+*/
+
+// делаем чекин младшего типа без автоклассификации
+reservation.checkin(AutoClassify.DO_NOT_AUTO_CLASSIFY, CheckinType.MINOR_VERSION);
+// после сохранения reservation указывает на текущую версию
+reservation.save(RefreshMode.REFRESH);
+
+// 2. С помощью VersionSeries
+// получаем набор версий
+VersionSeries verSeries = doc.get_VersionSeries();
+
+// делаем чекаут и сохраняем. эти операции для набора эквивалентны операциям на текущей версии
+verSeries.checkout(ReservationType.OBJECT_STORE_DEFAULT, null, null, null);
+verSeries.save(RefreshMode.REFRESH);
+
+// получаем зарезервированную версию
+reservation = (Document) verSeries.get_Reservation();
+
+/* здесь работаем с reservation
+   ...
+*/
+ 
+// делаем чекин старшего типа без автоклассификации
+reservation.checkin(null, CheckinType.MAJOR_VERSION);
+reservation.save(RefreshMode.REFRESH);
+ 
+// получаем текущую версию. version и reservation ссылаются на один и тот же объект CE
+version = verSeries.get_CurrentVersion();
+System.out.println("Состояние: " + version.get_VersionStatus().toString() +
+   "\n Номер: " + version.get_MajorVersionNumber() +"."+ version.get_MinorVersionNumber() );
+```
+
 #### Удаление версии
 #### Отмена чекаута
 #### Работа с набором версий
@@ -125,6 +172,7 @@
 
 ## Дополнительные материалы
 
+* [Примеры кода](https://www.ibm.com/support/knowledgecenter/en/SSNW2F_5.2.0/com.ibm.p8.ce.dev.ce.doc/version_procedures.htm)
 * [Versioning](https://www.ibm.com/support/knowledgecenter/SSNW2F_5.2.1/com.ibm.p8.sysoverview.doc/p8sov009.htm)
 * [Versioning properties](https://www.ibm.com/support/knowledgecenter/SSGLW6_5.2.0/com.ibm.p8.ce.admin.tasks.doc/docsandfolders/df_versioning_properties.htm)
 * [Versioning actions](https://www.ibm.com/support/knowledgecenter/SSNW2F_5.2.1/com.ibm.p8.ce.admin.tasks.doc/docsandfolders/df_versioning_actions.htm)
