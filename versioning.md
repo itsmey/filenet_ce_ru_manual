@@ -67,7 +67,34 @@
 ------------ | -------------
 `void checkin(AutoClassify autoClassify, CheckinType checkinType)`|Сделать чекин зарезервированной версии. Параметр checkinType определяет тип чекина: MINOR_VERSION - младший, MAJOR_VERSION - старший. Параметр autoClassify определяет, необходимо ли [автоматически классифицировать](https://www.ibm.com/support/knowledgecenter/SSNW2F_5.2.0/com.ibm.p8.ce.admin.tasks.doc/autodocclassification/adc_understanding_auto_doc_classification.htm) документ по вложениям. Возможные значения: AUTO_CLASSIFY, DO_NOT_AUTO_CLASSIFY
 
+Если версия документа не зарезервирована, бросается исключение E_NOT_SUPPORTED.
+
 ### Versionable
+
+Метод | Что делает
+------------ | -------------
+`Versionable cancelCheckout()`|Отмена чекаута. Зарезервированный объект удаляется, текущая версия становится доступной для чекаута. Метод выполняется для текущего объекта и возвращает зарезервированный объект, ожидающий удаления. Для окончательно удаления нужно вызвать метод save() этого объекта
+`void checkout(ReservationType type, Id reservationId, java.lang.String reservationClass, Properties reservationProperties)`|Выполннить чекаут, т.е. создать зарезервированную версию объекта. reservationType - тип резервации: COLLABORATIVE - пользователи с соотв. правами могут работать с зарез-й версией, EXCLUSIVE - только данный пользователь работает с версией. reservationId - ID зарез-й версии, null для автомат. генерации. reservationClass - класс заерз-й версии или null, чтобы оставить текущий класс. reservationProperties - коллекция свойств для присвоения новому объекту
+`void demoteVersion()`|Понижает версию с состояния выпущенной до промежуточной. Соответственно меняется номер, например, если было продвижение 1.1 -> 2.0, то после понижения 2.0 станет 1.2
+`void freeze()`|Заблокировать версию от любых изменений. Это действие невозможно отменить, но можно сделать чекаут
+`Versionable get_CurrentVersion()`|Возвращает текущую версию того набора версий, к которому принадлежит объект
+`java.util.Date get_DateCheckedIn()`|Возвращает дату чекина
+`FolderSet get_FoldersFiledIn()`|Возвращает коллекцию папок (объектов Folder), содержащих объект
+`java.lang.Boolean get_IsCurrentVersion()`|Возвращает, является ли данная версия текущей
+`java.lang.Boolean get_IsFrozenVersion()`|Возвращает, является ли данная версия заблокированной
+`java.lang.Boolean get_IsReserved()`|Возвращает, был ли сделан чекаут данной версии, т.е. существует ли у даннной версии зарезервированная. Свойство IsReserved принимает значение true после чекаута. Оно не позволяет делать чекаут больше одного раза
+`java.lang.Boolean get_IsVersioningEnabled()`|Возвращает, можно ли создавать версии этого объекта
+`java.lang.Integer get_MajorVersionNumber()`|Возвращает номер старшей версии
+`java.lang.Integer get_MinorVersionNumber()`|Возвращает номер младшей версии
+`IndependentObject get_Reservation()`|Возвращает зарезервированную версию. Используется после чекаута
+`ReservationType get_ReservationType()`|Возвращает тип резервации (см. параметр reservationType в методе checkout()
+`Folder get_SecurityFolder()`|Возвращает папку, от которой объект наследует права доступа
+`VersionableSet get_Versions()`|Возвращает коллекцию версий набора, к которому принадлежит объект
+`VersionSeries get_VersionSeries()`|Возвращает набор версий, к которому принадлежит объект
+`VersionStatus get_VersionStatus()`|Возвращает состояние версии. IN_PROCESS - промежуточная, RESERVATION - зарезервированная, RELEASED - выпущенная, SUPERSEDED - замещенная
+`void promoteVersion()`|Повышает промежуточную версию до выпущенной. Также меняется номер, например, 1.2 после повышения станен 2.0
+`void set_DateCheckedIn(java.util.Date value)`|Устанавливает дату чекина
+`void set_SecurityFolder(Folder value)`|Устанавливает папку, от которой объект наследует права доступа
 
 ### VersionSeries
 
