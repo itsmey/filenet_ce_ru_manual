@@ -103,7 +103,6 @@
 Метод | Что делает
 ------------ | -------------
 `Versionable cancelCheckout()`|Отмена чекаута текущей версии. См. Versionable
-Cancels the check-out reservation held on this document or version series by deleting the reservation object associated with it.
 `void checkout(ReservationType type, Id reservationId, java.lang.String reservationClass, Properties reservationProperties)`|Чекаут текущей версии. См. Versionable
 `Versionable get_CurrentVersion()`|Возвращает текущую версию
 `java.lang.Boolean get_IsReserved()`|Возвращает, был ли сделан чекаут текущей версии
