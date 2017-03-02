@@ -184,3 +184,5 @@ catch( EngineRuntimeException ex) {
         throw ex;
 }
 ```
+
+В дальнейшем, запись "бросаеся исключение X" применительно к методам CE означает "бросается EngineRuntimeException с кодом X".
