@@ -152,7 +152,7 @@ reservation = (Document) verSeries.get_Reservation();
 */
  
 // делаем чекин старшего типа без автоклассификации
-reservation.checkin(null, CheckinType.MAJOR_VERSION);
+reservation.checkin(AutoClassify.DO_NOT_AUTO_CLASSIFY, CheckinType.MAJOR_VERSION);
 reservation.save(RefreshMode.REFRESH);
  
 // получаем текущую версию. version и reservation ссылаются на один и тот же объект CE
@@ -161,14 +161,83 @@ System.out.println("Состояние: " + version.get_VersionStatus().toString
    "\n Номер: " + version.get_MajorVersionNumber() +"."+ version.get_MinorVersionNumber() );
 ```
 
-#### Удаление версии
+#### Удаление
+
+В данном примере удаляются те версии в наборе, у которых старший номер равен 3. Также демонстрируется работа с набором версий при помощи итератора.
+
+```java
+static PropertyFilter pf = new PropertyFilter();  
+pf.addIncludeProperty(new FilterElement(null, null, null, "VersionSeries Id", null) );
+Document doc = Factory.Document.fetchInstance(os, new Id("{91CD21FA-5F65-4D5B-AE3E-ECE529C7AC88}"), pf);   
+
+// получаем коллекцию версий
+VersionSeries vs = doc.get_VersionSeries();
+VersionableSet vss = vs.get_Versions();
+
+// обходим коллекцию версий
+Iterator vssiter = vss.iterator();
+while (vssiter.hasNext()) {
+   Versionable ver = (Versionable)vssiter.next();
+   System.out.println("Major = " + ver.get_MajorVersionNumber() + "; Minor = " + ver.get_MinorVersionNumber());
+   if (ver.get_MajorVersionNumber().intValue() == 3){
+      // приводим к типу Document, чтобы иметь возможность вызвать методы delete() и save()
+      Document verdoc = (Document) ver;
+      verdoc.delete();
+      verdoc.save(RefreshMode.REFRESH);
+   }
+}
+```
+
+При удалении объекта VersionSeries удаляются также все документа, которые в нём содержатся:
+
+```java
+PropertyFilter pf = new PropertyFilter();
+pf.addIncludeProperty(new FilterElement(null, null, null, PropertyNames.VERSION_SERIES, null)); 
+Document doc = Factory.Document.fetchInstance(os, "{3488C44F-D4BB-455F-AEED-553E9EADCC4E}", pf );
+
+VersionSeries verSeries = doc.get_VersionSeries();
+
+verSeries.delete();
+verSeries.save(RefreshMode.REFRESH);
+```
+
 #### Отмена чекаута
-#### Работа с набором версий
-#### Удаление набора версий
-#### Свойства Versionable
-#### Повышение
-#### Понижение
+
+Если к моменту вызова метода cancelCheckout() чекаута не было, бросается исключение API_NOT_A_RESERVATION.
+
+Важно! Метод нужно вызывать не у зарезервированного объекта, а у того, который резервируют (у текущей версии). Далее вызывается save() зарезервированной версии.
+
+```java
+Document doc = Factory.Document.getInstance(os, ClassNames.DOCUMENT, 
+      new Id("{D6DCDE1F-EF67-4A2E-9CDB-391999BCE8E5}") );
+doc.checkout(ReservationType.EXCLUSIVE, null, null, null);
+doc.save(RefreshMode.REFRESH);
+
+Document reservation = (Document) doc.get_Reservation();
+
+doc.cancelCheckout(); 
+reservation.save(RefreshMode.REFRESH);
+```
+
+#### Повышение / понижение
+
+Методы promoteVersion() и demoteVersion() позволяют изменить состояние и номер версии, минуя чекаут/чекин и не трогая свойства, не касающиеся версионности. Эти методы генерируют исключение E_NOT_SUPPORTED, если не выполняется ряд условий - версия должна быть текущей и иметь соответствующее состояние, зарезервированная версия не должна существать, пользователь должет обладать необходимыми правами доступа.
+
+```java
+Document doc = Factory.Document.getInstance(os, ClassNames.DOCUMENT, new Id("{9B289B8A-DDD9-42DC-9D51-6B485509B68A}") );
+doc.promoteVersion(); // или demoteVersion()
+doc.save(RefreshMode.REFRESH);
+```
+
 #### Блокирование свойств
+
+Пример применения метода freeze().
+```java
+Document doc = Factory.Document.getInstance(os, ClassNames.DOCUMENT, new Id("{9B289B8A-DDD9-42DC-9D51-6B485509B68A}"));
+doc.freeze();
+doc.save(RefreshMode.REFRESH);
+```
+Теперь свойства "заморожены". Единственный способ изменить объект - создать новую версию.
 
 ## Дополнительные материалы
 
