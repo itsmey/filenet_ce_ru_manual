@@ -61,6 +61,8 @@
 * методами интерфейса [Versionable](https://www.ibm.com/support/knowledgecenter/en/SSGLW6_5.2.1/com.ibm.p8.ce.dev.java.doc/com/filenet/api/core/Versionable.html). Versionable является суперинтерфейсом для Document, поэтому эти методы доступны в любом документе
 * методами интерфейса [VersionSeries](https://www.ibm.com/support/knowledgecenter/en/SSGLW6_5.2.1/com.ibm.p8.ce.dev.java.doc/com/filenet/api/core/VersionSeries.html). Чтобы получить объект VersionSeries, можно воспользоваться методом get_VersionSeries() документа или методами фабричного класса Factory.VersionSeries
 
+Далее рассмотрим некоторые методы.
+
 ### checkin()
 
 Метод | Что делает
@@ -97,6 +99,18 @@
 `void set_SecurityFolder(Folder value)`|Устанавливает папку, от которой объект наследует права доступа
 
 ### VersionSeries
+
+Метод | Что делает
+------------ | -------------
+`Versionable cancelCheckout()`|Отмена чекаута текущей версии. См. Versionable
+Cancels the check-out reservation held on this document or version series by deleting the reservation object associated with it.
+`void checkout(ReservationType type, Id reservationId, java.lang.String reservationClass, Properties reservationProperties)`|Чекаут текущей версии. См. Versionable
+`Versionable get_CurrentVersion()`|Возвращает текущую версию
+`java.lang.Boolean get_IsReserved()`|Возвращает, был ли сделан чекаут текущей версии
+`java.lang.Boolean get_IsVersioningEnabled()`|Возвращает, можно ли создавать новые версии
+`Versionable get_ReleasedVersion()`|Возвращает выпущенную версию
+`IndependentObject get_Reservation()`|Возвращает зарезервированную версию
+`VersionableSet get_Versions()`|Возвращает коллекцию версий
 
 ### [Примеры кода](https://www.ibm.com/support/knowledgecenter/en/SSNW2F_5.2.0/com.ibm.p8.ce.dev.ce.doc/version_procedures.htm)
 
