@@ -177,4 +177,12 @@ object.save(RefreshMode.NO_REFRESH);
 
 ### Удаление версионных объектов
 
-TODO
+Версионные объекты, т.е. документы (Document), объединяются в наборы версий (VersionSeries). При удалении документа остальные версии останутся в наборе. Если необходимо удалить все версии в наборе, нужно удалить сам набор:
+
+```java
+// получение набора версий
+VersionSeries versionSeries = document.get_VersionSeries();
+
+versionSeries.delete();
+versionSeries.save(RefreshMode.NO_REFRESH);
+```
