@@ -94,7 +94,7 @@
 `VersionableSet get_Versions()`|Возвращает коллекцию версий набора, к которому принадлежит объект
 `VersionSeries get_VersionSeries()`|Возвращает набор версий, к которому принадлежит объект
 `VersionStatus get_VersionStatus()`|Возвращает состояние версии. IN_PROCESS - промежуточная, RESERVATION - зарезервированная, RELEASED - выпущенная, SUPERSEDED - замещенная
-`void promoteVersion()`|Повышает промежуточную версию до выпущенной. Также меняется номер, например, 1.2 после повышения станен 2.0
+`void promoteVersion()`|Повышает промежуточную версию до выпущенной. Также меняется номер, например, 1.2 после повышения станет 2.0
 `void set_DateCheckedIn(java.util.Date value)`|Устанавливает дату чекина
 `void set_SecurityFolder(Folder value)`|Устанавливает папку, от которой объект наследует права доступа
 
