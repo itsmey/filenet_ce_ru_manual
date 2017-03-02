@@ -56,13 +56,20 @@
 
 ## Реализация в CE
 
-Версионные объекты имеют API [Versionable](https://www.ibm.com/support/knowledgecenter/en/SSGLW6_5.2.1/com.ibm.p8.ce.dev.java.doc/com/filenet/api/core/Versionable.html).
+Технически работа с версиями представлена
+* методом checkin() интерфейса Document
+* методами интерфейса [Versionable](https://www.ibm.com/support/knowledgecenter/en/SSGLW6_5.2.1/com.ibm.p8.ce.dev.java.doc/com/filenet/api/core/Versionable.html). Versionable является суперинтерфейсом для Document, поэтому эти методы доступны в любом документе
+* методами интерфейса [VersionSeries](https://www.ibm.com/support/knowledgecenter/en/SSGLW6_5.2.1/com.ibm.p8.ce.dev.java.doc/com/filenet/api/core/VersionSeries.html). Чтобы получить объект VersionSeries, можно воспользоваться методом get_VersionSeries() документа или методами фабричного класса Factory.VersionSeries
 
-TODO: методы Versionable
+### checkin()
 
-Набор версий представлен интерфейсом [VersionSeries](https://www.ibm.com/support/knowledgecenter/en/SSGLW6_5.2.1/com.ibm.p8.ce.dev.java.doc/com/filenet/api/core/VersionSeries.html).
+Метод | Что делает
+------------ | -------------
+`void checkin(AutoClassify autoClassify, CheckinType checkinType)`|Сделать чекин зарезервированной версии. Параметр checkinType определяет тип чекина: MINOR_VERSION - младший, MAJOR_VERSION - старший. Параметр autoClassify определяет, необходимо ли [автоматически классифицировать](https://www.ibm.com/support/knowledgecenter/SSNW2F_5.2.0/com.ibm.p8.ce.admin.tasks.doc/autodocclassification/adc_understanding_auto_doc_classification.htm) документ по вложениям. Возможные значения: AUTO_CLASSIFY, DO_NOT_AUTO_CLASSIFY
 
-TODO: методы VersionSeries
+### Versionable
+
+### VersionSeries
 
 ### [Примеры кода](https://www.ibm.com/support/knowledgecenter/en/SSNW2F_5.2.0/com.ibm.p8.ce.dev.ce.doc/version_procedures.htm)
 
