@@ -10,8 +10,48 @@
 
 ## Разница между fetchInstance и getInstance
 
-* getInstance() создаёт локальное представление объекта, не извлекая при этом свойств (Properties) объекта. В таком виде над объектом можно производить операции, не затрагивающие свойств (например, удаление). Для получения свойств можно выполнить один из методов .refresh() или .fetchProperties().
-* fetchInstance() создаёт локальное представление объекта и, кроме этого, извлекает свойства объекта в локальный кэш согласно аргументу PropertyFilter. Смысл фильтра свойств в том, что необходимо извлекать не все свойства (их может быть много), а только те, которые понадобятся в дальнейшей работе. Поэтому необходимо всегда пользоваься фильтром. Однако, если аргумент PropertyFilter равен null, из хранилища извлекаются все свойства.
+### getInstance()
+Создаёт локальное представление объекта, не извлекая при этом свойств (Properties) объекта. В таком виде над объектом можно производить операции, не затрагивающие свойств (например, удаление). Для получения свойств можно выполнить один из методов .refresh() или .fetchProperties().
+
+getInstance() не обращается к серверу CE. Обращение к серверу происходит во время выхова таких методов, как save() или refresh().
+
+### fetchInstance()
+Создаёт локальное представление объекта и, кроме этого, извлекает свойства объекта в локальный кэш согласно аргументу PropertyFilter. Смысл фильтра свойств в том, что необходимо извлекать не все свойства (их может быть много), а только те, которые понадобятся в дальнейшей работе. Поэтому необходимо всегда пользоваься фильтром. Однако, если аргумент PropertyFilter равен null, из хранилища извлекаются все свойства.
+
+fetchInstance() обращается к серверу CE. Это значит, что метод может бросить исключение E_OBJECT_NOT_FOUND, если объект не найден на сервере. Рассмотрим код, определяющий, существует ли документ с данным Id:
+
+```java
+boolean isDocumentExists(Id id) {
+    try {
+        Document doc = Factory.Document.fetchInstance(objectStore, id, null);
+    } catch(EngineRuntimeException ex) {
+        ExceptionCode e = ex.getExceptionCode();
+        if(e == ExceptionCode.E_OBJECT_NOT_FOUND) {
+            return false;
+        }
+        else throw ex;
+    }
+    return true;
+}
+```
+
+Код можно переписать, используя getInstance() вместо fetchInstance():
+
+```java
+boolean isDocumentExists(Id id) {
+    try {
+        Document d = Factory.Document.getInstance(objectStore, null, id);
+        d.refresh();
+    } catch(EngineRuntimeException ex) {
+        ExceptionCode e = ex.getExceptionCode();
+        if(e == ExceptionCode.E_OBJECT_NOT_FOUND) {
+            return false;
+        }
+        else throw ex;
+    }
+    return true;
+}
+```
 
 Методы refresh() и fetchProperties() также поддерживают аргумент PropertyFilter.
 
