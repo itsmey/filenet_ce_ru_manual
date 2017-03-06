@@ -79,6 +79,12 @@ DynamicReferentialContainmentRelationship|между папкой и текущ�
 
 ## Ссылки
 
+Ссылка ([Link](https://www.ibm.com/support/knowledgecenter/SSGLW6_5.2.0/com.ibm.p8.ce.dev.java.doc/com/filenet/api/core/Link.html#get_Head())) представляет произвольное отношение между двумя объектами CE. То же, что и Relationship, но объекты типа Link можно инстанцировать ([Factory.Link](https://www.ibm.com/support/knowledgecenter/SSNW2F_4.5.1/com.ibm.p8.doc/developer_help/content_engine_api/javadocs/com/filenet/api/core/Factory.Link.html)).
+
+Объекты-ссылки имеют свойства Head и Tail типа IndependentObject и предоставляют геттеры и сеттеры для этих свойств.
+
+Важно! Если объект, на который указывает Head или Tail, был удалён, ссылка остаётся без изменений, т.е. указывает на несуществующий объект. Это может привести к ошибкам.
+
 ## Дополнительная информация
 
 * [Containment concepts](https://www.ibm.com/support/knowledgecenter/SSGLW6_5.2.0/com.ibm.p8.ce.dev.ce.doc/containment_concepts.htm)
