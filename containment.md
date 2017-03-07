@@ -189,7 +189,7 @@ catch (Exception ex)
            System.out.println("Exception: " + ex.getMessage());
    }
    else
-      // A standard Java exception.
+      // исключение Java
       System.out.println("Exception: " + ex.getMessage());
 }
 ```
