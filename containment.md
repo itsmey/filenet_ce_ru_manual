@@ -120,7 +120,81 @@ newFolder.save(RefreshMode.NO_REFRESH);
 ### Создание размещения
 
 #### Явное
+
+Рассмотрим создание динамического размещения, в котором Head имеет тип Versionable. Статическое размещение создаётся схожим образом, но Head в нём имеет тип Containable. 
+
+Динамическое размещение работает не с документом, а с набором версий (version series). Это позволяет следить за тем, чтобы в папке была всегда размещена текущая версия из набора.
+
+```java
+String parentFolderPath = "/Loans";
+
+// создаём документ
+Document doc = Factory.Document.createInstance(os, null);
+doc.save(RefreshMode.NO_REFRESH); 
+
+// получаем папку-контейнер
+Folder container = Factory.Folder.getInstance(os, null, parentFolderPath); 
+
+// создаём инстанс DynamicReferentialContainmentRelationship
+DynamicReferentialContainmentRelationship drcr = 
+    Factory.DynamicReferentialContainmentRelationship.createInstance(os, null); 
+
+// назначаем свойства Head и Tail
+drcr.set_Head(doc); 
+drcr.set_Tail(container); 
+drcr.save(RefreshMode.NO_REFRESH);
+```
+
 #### Неявное
+
+Рассмотрим параметры метода file():
+
+`ReferentialContainmentRelationship file(IndependentlyPersistableObject containee,AutoUniqueName autoUniqueName,java.lang.String containmentName,DefineSecurityParentage defineSecurityParentage)`
+
+* containee - хранимый объект
+* autoUniqueName - параметр, определяющий, нужно ли автоматически разрешать коллизии имён:
+  - AUTO_UNIQUE - нужно
+  - NOT_AUTO_UNIQUE - не нужно
+* defineSecurityParentage - определяет, наследовать ли параметры безопасности хранимого объекта у данного контейнера:
+  - DEFINE_SECURITY_PARENTAGE - наследовать. Если указано это значение, свойству SecurityFolder объекта автоматически присваивается ссылка на контейнер
+  - DO_NOT_DEFINE_SECURITY_PARENTAGE - не наследовать
+  
+```java
+String folderPath = "/ExistingLoans/MyLoans";
+String newFolderPath = "/NewLoans/MyNewLoans";
+String newContainmentName = "Loan1";
+
+Document myDoc = Factory.Document.fetchInstance(os, folderPath + "/MyLoan_1", null);
+Folder newFolder = Factory.Folder.fetchInstance(os, newFolderPath, null);
+
+// т.к. хранимым объектом является документ, для коррекного создания динамического размещения нужно
+// привести значение к типу DynamicReferentialContainmentRelationship
+try {
+   DynamicReferentialContainmentRelationship drcr = 
+      (DynamicReferentialContainmentRelationship) newFolder.file(
+         myDoc, AutoUniqueName.NOT_AUTO_UNIQUE, newContainmentName, DefineSecurityParentage.DEFINE_SECURITY_PARENTAGE);
+   drcr.save(RefreshMode.NO_REFRESH);
+}
+catch (Exception ex) 
+{   
+  if (ex instanceof EngineRuntimeException) {
+    EngineRuntimeException fnEx = (EngineRuntimeException) ex;
+        // обработка исключения E_NOT_UNIQUE - нарушение уникальности containment name
+        if (fnEx.getExceptionCode().equals(ExceptionCode.E_NOT_UNIQUE) ) {
+           System.out.println("Exception: " + ex.getMessage() + "\n" +
+              "The name " + "\"" + newContainmentName + "\"" + " is already used.\n" + 
+              "Please file the document with a unique name.");
+        }
+        else
+           System.out.println("Exception: " + ex.getMessage());
+   }
+   else
+      // A standard Java exception.
+      System.out.println("Exception: " + ex.getMessage());
+}
+```
+
+Важно! Если требуется создать размещение конкретной версии документа в папке, используйте явный способ, т.к. это невозможно сделать через метод file(). Метод file() автоматически создаёт динамическое размещение, если в качестве containee в него передаётся инстанс Document.
 
 ## Ссылки
 
