@@ -106,3 +106,8 @@ while (iterator.hasNext()) {
 ```
 
 Здесь свойство DocumentTitle вынесено в запрос, потому что в цикле итератора доступны только данные, но не сам объект.
+
+## Дополнительная информация
+
+* [Query syntax](https://www.ibm.com/support/knowledgecenter/en/SSGLW6_5.2.0/com.ibm.p8.ce.dev.ce.doc/query_sql_syntax_rel_queries.htm)
+* [Working with queries](https://www.ibm.com/support/knowledgecenter/SSNW2F_5.2.1/com.ibm.p8.ce.dev.ce.doc/query_procedures.htm)
