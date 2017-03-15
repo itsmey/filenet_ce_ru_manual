@@ -38,6 +38,8 @@
 
 **URL** - uniform resource locator
 
+**ACL** - access control list
+
 ## Соответствие между английскими и русскими терминами
 
 *Object store* - хранилище объектов
