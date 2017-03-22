@@ -79,6 +79,8 @@
 
 *Access right* - право доступа
 
+*Access permission list, access control list* - список прав доступа
+
 ## Литература и ссылки
 
 - *Wei-Dong Zhu and others. IBM FileNet P8 Platform and Architecture*
