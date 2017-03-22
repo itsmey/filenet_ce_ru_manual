@@ -41,6 +41,8 @@
 
 **ACL** - access control list
 
+**AD** - active directory
+
 ## Соответствие между английскими и русскими терминами
 
 *Object store* - хранилище объектов
