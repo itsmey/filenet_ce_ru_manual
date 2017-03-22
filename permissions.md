@@ -46,33 +46,34 @@ void set_AccessMask(java.lang.Integer value) |Задает значение св
 
 **значение** | **действие**
 ------------ | -------------
-ADD_MARKING|Specifies that the user or group is granted or denied permission to assign a Marking object to an object.
-CHANGE_STATE|Specifies that the user or group is granted or denied permission to change the lifecycle state of an object.
-CONNECT|Specifies that the user or group is granted or denied permission to connect to an object store.
-CREATE_CHILD|Specifies that the user or group is granted or denied permission to create a child object.
-CREATE_INSTANCE|Specifies that the user or group is granted or denied permission to create a new instance of an object.
-DELETE|Specifies that the user or group is granted or denied permission to delete an object.
-LINK|Specifies that the user or group is granted or denied permission to link to an object.
-MAJOR_VERSION|Specifies that the user or group is granted or denied permission to create a document major version.
-MINOR_VERSION|Specifies that the user or group is granted or denied permission to create a new document minor version.
-MODIFY_OBJECTS|Specifies that the user or group is granted or denied permission to modify objects in an object store.
-MODIFY_RETENTION|This constant is not supported.
-NONE|Specifies that the user or group has no access to objects.
-PRIVILEGED_WRITE|Specifies that the user or group is granted or denied permission to set certain system-level properties (Creator, DateCreated, LastModifier, DateLastModified).
-PUBLISH|Specifies that the user or group is granted or denied permission to publish an object.
-READ|Specifies that the user or group is granted or denied permission to view the properties of an object.
-READ_ACL|Specifies that the user or group is granted or denied permission to view an object's security (that is, its PermissionList collection).
-REMOVE_MARKING|Specifies that the user or group is granted or denied permission to remove a Marking object from an object.
-REMOVE_OBJECTS|Specifies that the user or group is granted or denied permission to delete objects in an object store.
-STORE_OBJECTS|Specifies that the user or group is granted or denied permission to create and store new objects in an object store.
-UNLINK|Specifies that the user or group is granted or denied permission to unlink from an object.
-USE_MARKING|Determines whether or not the constraint mask will be applied.
-VIEW_CONTENT|Specifies that the user or group is granted or denied permission to view the content of an object.
-VIEW_RECOVERABLE_OBJECTS|Specifies that the user or group is granted or denied permission to retrieve or query all recoverable objects in the object store.
-WRITE|Specifies that the user or group is granted or denied permission to modify the properties of an object.
-WRITE_ACL|Specifies that the user or group is granted or denied permission to modify an object's security (that is, its PermissionList collection).
-WRITE_ANY_OWNER|Specifies that the user or group is granted or denied permission to change the ownership of an object to another user.
-WRITE_OWNER|Specifies that the user or group is granted or denied permission to assume the ownership of an object.
+ADD_MARKING|Назначение маркировки объекту
+CHANGE_STATE|Изменение состояния жизненного цикла объекта
+CONNECT|Соединение с хранилищем объектов
+CREATE_CHILD|Создание дочернего объекта
+CREATE_INSTANCE|Создание нового инстанса
+DELETE|Удаление объекта
+LINK|Связывание объекта с помощью Link
+MAJOR_VERSION|Создание старшей версии
+MINOR_VERSION|Создание младшей версии
+MODIFY_OBJECTS|Изменение объектов в хранилище
+NONE|Остутствие любых прав
+PRIVILEGED_WRITE|Изменение системных свойств (Creator, DateCreated, LastModifier, DateLastModified).
+PUBLISH|Публикация объекта
+READ|Просмотр свойств 
+READ_ACL|Просмотр прав доступа
+REMOVE_MARKING|Удаление маркировки
+REMOVE_OBJECTS|Удаление объектов в хранилище
+STORE_OBJECTS|Создание и размещение новых объектов в хранилище
+UNLINK|Удаление связи Link с объектом
+USE_MARKING|
+VIEW_CONTENT|Просмотр содержимого
+VIEW_RECOVERABLE_OBJECTS|Просмотр восстанавливаемых объектов в хранилище
+WRITE|Изменение свойств
+WRITE_ACL|Изменение свойств, отвечающих за права доступа
+WRITE_ANY_OWNER|Изменение владельца объекта
+WRITE_OWNER|Возможность быть владельцем объекта
+
+Важно! К каждому типу, поддерживающиму ACL, применимы не все а только определённые действия. В частности, такие действия, как MODIFY_OBJECTS, REMOVE_OBJECTS, STORE_OBJECTS, VIEW_RECOVERABLE_OBJECTS имеют смысл только в том случае, когда применены к хранилищу объектов.
 
 Чтобы получить целочисленное значение, применяется метод getVaue():
 
@@ -88,6 +89,8 @@ private static final int LOAN_CREATOR = AccessRight.READ_ACL.getValue() | Access
 Для работы с иерархией пользователей и групп CE может быть настроен на сервер службы каталогов (directory service), например, Windows Active Directory. Внутри CE пользователи и группы представлены инстансами [User](https://www.ibm.com/support/knowledgecenter/en/SSNW2F_4.5.1/com.ibm.p8.doc/developer_help/content_engine_api/javadocs/com/filenet/api/security/User.html) и [Group](https://www.ibm.com/support/knowledgecenter/en/SSNW2F_4.5.1/com.ibm.p8.doc/developer_help/content_engine_api/javadocs/com/filenet/api/security/Group.html). Им соответствуют фабричные классы [Factory.User](https://www.ibm.com/support/knowledgecenter/en/SSNW2F_4.5.1/com.ibm.p8.doc/developer_help/content_engine_api/javadocs/com/filenet/api/core/Factory.User.html) и [Factory.Group](https://www.ibm.com/support/knowledgecenter/SSNW2F_5.1.0/com.ibm.p8.ce.dev.java.doc/com/filenet/api/core/Factory.Group.html). Эти фабричные классы предназначены только для получнеия инстансов по id, полному или краткому имени. Создавать новые инстансы нельзя.
 
 Класс Factory.User, кроме того, имеет метод fetchCurrent() для получения текущего пользователя.
+
+## CREATOR-OWNER
 
 ## Права доступа по умолчанию
 
