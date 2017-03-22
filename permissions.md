@@ -74,3 +74,39 @@ WRITE_ACL|Specifies that the user or group is granted or denied permission to mo
 WRITE_ANY_OWNER|Specifies that the user or group is granted or denied permission to change the ownership of an object to another user.
 WRITE_OWNER|Specifies that the user or group is granted or denied permission to assume the ownership of an object.
 
+Чтобы получить целочисленное значение, применяется метод getVaue():
+
+```java
+private static final int LOAN_CREATOR = AccessRight.READ_ACL.getValue() | AccessRight.CHANGE_STATE.getValue() 
+           | AccessRight.CREATE_INSTANCE.getValue() | AccessRight.VIEW_CONTENT.getValue() 
+           | AccessRight.MINOR_VERSION.getValue() | AccessRight.UNLINK.getValue()
+           | AccessRight.LINK.getValue() | AccessRight.WRITE.getValue() | AccessRight.READ.getValue();
+```
+
+## Пользователи и группы
+
+Для работы с иерархией пользователей и групп CE может быть настроен на сервер службы каталогов (directory service), например, Windows Active Directory. Внутри CE пользователи и группы представлены инстансами [User](https://www.ibm.com/support/knowledgecenter/en/SSNW2F_4.5.1/com.ibm.p8.doc/developer_help/content_engine_api/javadocs/com/filenet/api/security/User.html) и [Group](https://www.ibm.com/support/knowledgecenter/en/SSNW2F_4.5.1/com.ibm.p8.doc/developer_help/content_engine_api/javadocs/com/filenet/api/security/Group.html). Им соответствуют фабричные классы [Factory.User](https://www.ibm.com/support/knowledgecenter/en/SSNW2F_4.5.1/com.ibm.p8.doc/developer_help/content_engine_api/javadocs/com/filenet/api/core/Factory.User.html) и [Factory.Group](https://www.ibm.com/support/knowledgecenter/SSNW2F_5.1.0/com.ibm.p8.ce.dev.java.doc/com/filenet/api/core/Factory.Group.html). Эти фабричные классы предназначены только для получнеия инстансов по id, полному или краткому имени. Создавать новые инстансы нельзя.
+
+Класс Factory.User, кроме того, имеет метод fetchCurrent() для получения текущего пользователя.
+
+## Права доступа по умолчанию
+
+Определения классов (инстансы ClassDefinition) имеют также свойство DefaultInstancePermissions типа AccessPermissionsList:
+
+* AccessPermissionList get_DefaultInstancePermissions()
+* void set_DefaultInstancePermissions(AccessPermissionList value)
+
+Это ACL по умолчанию. Эти правила, если заданы, будут автоматически присвоены новому инстансу данного класса сразу после его создания.
+
+## Политики безопасности
+
+## Примеры кода
+
+### Назначение прав
+### Изменение прав
+### Проверка прав
+### Описания прав доступа
+
+## Дополнительная информация
+
+* [Working with security](https://www.ibm.com/support/knowledgecenter/en/SSGLW6_5.2.1/com.ibm.p8.ce.dev.ce.doc/sec_procedures.htm)
