@@ -43,6 +43,8 @@
 
 **AD** - active directory
 
+**LDAP** - lightweight directory access protocol
+
 ## Соответствие между английскими и русскими терминами
 
 *Object store* - хранилище объектов
@@ -80,6 +82,8 @@
 *Access right* - право доступа
 
 *Access permission list, access control list* - список прав доступа
+
+*Directory service* - служба каталогов
 
 ## Литература и ссылки
 
