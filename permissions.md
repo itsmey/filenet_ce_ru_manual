@@ -221,7 +221,7 @@ while (iter.hasNext())
    if (ap.get_GranteeName().equalsIgnoreCase("LOANREVIEWERS@process.auto.acme.com"))
    {
       int rights = ap.get_AccessMask();
-      rights &= ~AccessRight.READ.getValue();
+      rights &= ~AccessRight.READ_ACL.getValue();
       ap.set_AccessMask(rights);
       apl.add(ap);
       cd.set_Permissions(apl); 
@@ -233,7 +233,7 @@ while (iter.hasNext())
 
 ### Описание прав доступа
 
-Имея описание класса (class definition), можно получить список описаний прав доступа как свойство PermissionDescriptions типа AccessPermissionDescriptionList.
+Имея описание класса (class description), можно получить список описаний прав доступа как свойство PermissionDescriptions типа AccessPermissionDescriptionList.
 
 Следующий пример выводит информацию о правах для класса Folder:
 
@@ -285,7 +285,7 @@ for (Object apdObject : permissionsDespriptions)
 * RIGHT - одиночное право
 * RIGHT_INHERIT_ONLY - одиночное право, применяемое только к дочерним классам
 * LEVEL - готовый набор прав, соответствующий определённому уровню доступа
-* LEVEL_DEFAULT - набор права по умолчанию для новых правил
+* LEVEL_DEFAULT - набор прав по умолчанию для новых правил
 
 ## Дополнительная информация
 
