@@ -106,8 +106,6 @@ private static final int LOAN_CREATOR = AccessRight.READ_ACL.getValue() | Access
 
 Это ACL по умолчанию. Эти правила, если заданы, будут автоматически присвоены новому инстансу данного класса сразу после его создания.
 
-## Политики безопасности
-
 ## Примеры кода
 
 ### Назначение прав
@@ -197,9 +195,97 @@ private boolean setPermissions(Document doc, String userDistinguishedName)
 }
 ```
 
-### Изменение прав
-### Проверка прав
-### Описания прав доступа
+### Изменение прав по умолчнаию
+
+В следующем примере извлекается некое определение класса (class description), и для определённой группы изменяются права по умолчанию на инстанс класса: удаляется право на чтение свойств доступа. 
+
+```java
+private static final PropertyFilter PF;
+static
+{
+   PF= new PropertyFilter();
+   PF.addIncludeProperty(new FilterElement(null, null, null, "DefaultInstancePermissions", null));
+}
+
+// плучаем некое определение класса. Нас интересует только свойство DefaultInstancePermissions
+ClassDefinition cd=Factory.ClassDefinition.fetchInstance(os, new Id("{3B71BC99-FD11-4E15-9CF5-83887ED1C42F}"), PF);
+
+AccessPermissionList apl = cd.get_DefaultInstancePermissions();
+apl = cd.get_Permissions();
+    	
+// обход всех правил. если правило относится к нужной группе, изменяем маску доступа - обнуляем бит READ_ACL
+Iterator iter = apl.iterator();
+while (iter.hasNext())
+{
+   AccessPermission ap =  (AccessPermission)iter.next();
+   if (ap.get_GranteeName().equalsIgnoreCase("LOANREVIEWERS@process.auto.acme.com"))
+   {
+      int rights = ap.get_AccessMask();
+      rights &= ~AccessRight.READ.getValue();
+      ap.set_AccessMask(rights);
+      apl.add(ap);
+      cd.set_Permissions(apl); 
+      cd.save(RefreshMode.REFRESH);
+      break;
+   }
+}
+```
+
+### Описание прав доступа
+
+Имея описание класса (class definition), можно получить список описаний прав доступа как свойство PermissionDescriptions типа AccessPermissionDescriptionList.
+
+Следующий пример выводит информацию о правах для класса Folder:
+
+```java
+ClassDescription classDescription = Factory.ClassDescription.fetchInstance(objectStore, "Folder", null);
+AccessPermissionDescriptionList permissionsDespriptions = classDescription.get_PermissionDescriptions();
+
+System.out.println(String.format("%-50s%-20s%-10s\n", "Наименование", "Тип", "Маска"));
+for (Object apdObject : permissionsDespriptions)
+{
+    AccessPermissionDescription description = (AccessPermissionDescription)apdObject;
+    System.out.println(String.format("%-50s%-20s%-10s", description.get_DisplayName(),
+            description.get_PermissionType(), description.get_AccessMask()));
+}
+```
+
+Вывод будет таким:
+
+```
+Наименование                                      Тип                 Маска     
+
+Полное управление                                 LEVEL               999415    
+Изменить свойства                                 LEVEL               135159    
+Добавить в папку                                  LEVEL               131121    
+Просмотреть свойства                              LEVEL_DEFAULT       131073    
+Просмотреть все свойства                          RIGHT               1         
+Изменить все свойства                             RIGHT               2         
+Резерв12 (Внедрение объявлено устаревшим)         RIGHT               4096      
+Резерв13 (Архивирование объявлено устаревшим)     RIGHT               8192      
+Включить в папку / Аннотировать                   RIGHT               16        
+Вынести из папки                                  RIGHT               32        
+Создать экземпляр                                 RIGHT               256       
+Создать подпапку                                  RIGHT               512       
+Удалить                                           RIGHT               65536     
+Прочесть разрешения                               RIGHT               131072    
+Изменить разрешения                               RIGHT               262144    
+Изменить владельца                                RIGHT               524288    
+Поддержка младших версий                          RIGHT_INHERIT_ONLY  64        
+Поддержка старших версий                          RIGHT_INHERIT_ONLY  4         
+Просмотреть содержимое                            RIGHT_INHERIT_ONLY  128       
+Изменить состояние                                RIGHT_INHERIT_ONLY  1024      
+Опубликовать                                      RIGHT_INHERIT_ONLY  2048   
+```
+
+Это перечень прав или наборов прав, которые могут быть применены к объекту - информация, полезная, например, при проектировании UI настроек безопасности. 
+
+Свойство PermissionType может быть:
+
+* RIGHT - одиночное правило
+* RIGHT_INHERIT_ONLY - одиночное правило, применяемое только к дочерним классам
+* LEVEL - готовый набор прав, соответствующий определённому уровню доступа
+* LEVEL_DEFAULT - права по умолчанию для новых правил
 
 ## Дополнительная информация
 
