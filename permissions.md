@@ -19,16 +19,16 @@ CE имеет гибкую модель управления правами до
 
 **метод** | **что делает**
 ------------ | -------------
-java.lang.String get_GranteeName() | Возвращает значение свойства GranteeName
-void set_GranteeName(java.lang.String value) |Задает значение свойства GranteeName
-SecurityPrincipalType get_GranteeType() |Возвращает значение свойства GranteeType
-java.lang.Integer get_InheritableDepth() |Возвращает значение свойства InheritableDepth
-void set_InheritableDepth(java.lang.Integer value) |Задает значение свойства InheritableDepth
-PermissionSource get_PermissionSource() |Возвращает значение свойства PermissionSource
-AccessType get_AccessType() |Возвращает значение свойства AccessType
-void set_AccessType(AccessType value) |Задает значение свойства AccessType
-java.lang.Integer get_AccessMask() |Возвращает значение свойства AccessMask
-void set_AccessMask(java.lang.Integer value) |Задает значение свойства AccessMask
+`java.lang.String get_GranteeName()` | Возвращает значение свойства GranteeName
+`void set_GranteeName(java.lang.String value)` |Задает значение свойства GranteeName
+`SecurityPrincipalType get_GranteeType()` |Возвращает значение свойства GranteeType
+`java.lang.Integer get_InheritableDepth()` |Возвращает значение свойства InheritableDepth
+`void set_InheritableDepth(java.lang.Integer value)` |Задает значение свойства InheritableDepth
+`PermissionSource get_PermissionSource()` |Возвращает значение свойства PermissionSource
+`AccessType get_AccessType()` |Возвращает значение свойства AccessType
+`void set_AccessType(AccessType value)` |Задает значение свойства AccessType
+`java.lang.Integer get_AccessMask()` |Возвращает значение свойства AccessMask
+`void set_AccessMask(java.lang.Integer value)` |Задает значение свойства AccessMask
 
 * свойство GranteeName определяет полное или краткое имя пользователя или группы
 * свойство GranteeType определяет, относится ли данное правило к пользователю (SecurityPrincipalType.USER) или группе (SecurityPrincipalType.GROUP). Только для чтения
