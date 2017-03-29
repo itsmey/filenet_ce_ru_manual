@@ -143,11 +143,12 @@ private boolean setPermissions(Document doc, String userDistinguishedName)
    //инстанс User нам нужен для того, чтобы узнать группы, в которых состоит пользователь
    PropertyFilter propertyFilter = new PropertyFilter();
    propertyFilter.addIncludeProperty(new FilterElement(1, null, null, "MemberOfGroups", null));
+   User user
    try {
-       User user = Factory.User.fetchInstance(doc.getConnection(), userDistinguishedName, propertyFilter);
+       user = Factory.User.fetchInstance(doc.getConnection(), userDistinguishedName, propertyFilter);
    }
    catch (EngineRuntimeException ex) {
-       if (ex.getExceptionCode().equals(ExceptionCode.E_NOT_FOUND)) {
+       if (ex.getExceptionCode().equals(ExceptionCode.E_OBJECT_NOT_FOUND)) {
           return false;  //такого пользователя не существует
        } else
            throw ex;
@@ -163,7 +164,7 @@ private boolean setPermissions(Document doc, String userDistinguishedName)
         
    GroupSet groups = user.get_MemberOfGroups();
    Iterator iter = groups.iterator();
-   while (iter.hasNext() == true) 
+   while (iter.hasNext()) 
    {
       Group group = (Group) iter.next();
 
