@@ -90,14 +90,19 @@ private static final int LOAN_CREATOR = AccessRight.READ_ACL.getValue() | Access
 
 Класс Factory.User, кроме того, имеет метод fetchCurrent() для получения текущего пользователя.
 
-## CREATOR-OWNER
+## CREATOR-OWNER и AUTHENTICATED-USERS
+
+В протоколе службы каталогов LDAP есть особые виртуальные (логические) сущности: пользователь `#CREATOR-OWNER` и группа `#AUTHENTICATED-USERS`. Эти названия можно использовать в качестве GranteeName:
+
+* `#CREATOR-OWNER` обозначает пользователя, создавшего объект. Используется для прав доступа по умолчанию (dafault instanse permissions): при создании инстанса класса заменяется на реальное имя пользователя
+* `#AUTHENTICATED-USERS` обозначает пользователей, зашедших в систему, используя логин и пароль. Поскольку группа логическая, её состав время от времени меняется
 
 ## Права доступа по умолчанию
 
 Определения классов (инстансы ClassDefinition) имеют также свойство DefaultInstancePermissions типа AccessPermissionsList:
 
-* AccessPermissionList get_DefaultInstancePermissions()
-* void set_DefaultInstancePermissions(AccessPermissionList value)
+* `AccessPermissionList get_DefaultInstancePermissions()`
+* `void set_DefaultInstancePermissions(AccessPermissionList value)`
 
 Это ACL по умолчанию. Эти правила, если заданы, будут автоматически присвоены новому инстансу данного класса сразу после его создания.
 
