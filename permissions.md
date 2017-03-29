@@ -75,7 +75,7 @@ WRITE_OWNER|Возможность быть владельцем объекта
 
 Важно! К каждому типу, поддерживающиму ACL, применимы не все а только определённые действия. В частности, такие действия, как MODIFY_OBJECTS, REMOVE_OBJECTS, STORE_OBJECTS, VIEW_RECOVERABLE_OBJECTS имеют смысл только в том случае, когда применены к хранилищу объектов.
 
-Чтобы получить целочисленное значение, применяется метод getVaue():
+Чтобы получить целочисленное значение, применяется метод getVaue(). Рассмотрим пример конструирования битовой маски для свойства AccessMask:
 
 ```java
 private static final int LOAN_CREATOR = AccessRight.READ_ACL.getValue() | AccessRight.CHANGE_STATE.getValue() 
