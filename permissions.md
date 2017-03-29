@@ -111,6 +111,92 @@ private static final int LOAN_CREATOR = AccessRight.READ_ACL.getValue() | Access
 ## Примеры кода
 
 ### Назначение прав
+
+Рассмотрим функцию, которая принимает два аргумента: документ и имя пользователя AD, и назначает права пользователя на документ в зависимости от членства в группах Admins, Readers или Editors.
+
+Уникальное имя пользователя (distinguished name) представляет собой строку вида *"CN=OSMI_admin,OU=БД МИ,DC=tn,DC=bunker,DC=ru"*, где CN обозначает имя пользователя, OU - имя отдела, DC - компоненты доменного имени.
+
+```java
+// Определим маски для разных типов доступа - чтение, чтение и запись, полной контроль
+private static final int READER_MASK = 
+    AccessRight.READ_ACL.getValue() | 
+    AccessRight.READ.getValue() | 
+    AccessRight.VIEW_CONTENT.getValue();
+
+private static final int WRITER_MASK = READER_MASK | 
+    AccessRight.CREATE_CHILD.getValue() | 
+    AccessRight.CREATE_INSTANCE.getValue() | 
+    AccessRight.READ.getValue() | 
+    AccessRight.MINOR_VERSION.getValue() | 
+    AccessRight.MAJOR_VERSION.getValue() | 
+    AccessRight.MODIFY_OBJECTS.getValue() | 
+    AccessRight.PUBLISH.getValue() | 
+    AccessRight.UNLINK.getValue() | 
+    AccessRight.WRITE.getValue();
+
+private static final int FULL_CONTROL_MASK = WRITER_MASK | 
+    AccessRight.DELETE.getValue() | 
+    AccessRight.WRITE_ACL.getValue() | 
+    AccessRight.WRITE_OWNER.getValue();
+
+private boolean setPermissions(Document doc, String userDistinguishedName)
+{
+   //пытаемся получить пользователя по уникальному имени
+   //инстанс User нам нужен для того, чтобы узнать группы, в которых состоит пользователь
+   PropertyFilter propertyFilter = new PropertyFilter();
+   propertyFilter.addIncludeProperty(new FilterElement(1, null, null, "MemberOfGroups", null));
+   try {
+       User user = Factory.User.fetchInstance(doc.getConnection(), userDistinguishedName, propertyFilter);
+   }
+   catch (EngineRuntimeException ex) {
+       if (ex.getExceptionCode().equals(ExceptionCode.E_NOT_FOUND)) {
+          return false;  //такого пользователя не существует
+       } else
+           throw ex;
+   }
+   
+   AccessPermissionList apList = doc.get_Permissions();
+   
+   //создаём новое правило для добавления в список
+   AccessPermission ap = Factory.AccessPermission.createInstance();
+   ap.set_GranteeName(userDistinguishedName);
+   ap.set_AccessType(AccessType.ALLOW); 
+   ap.set_InheritableDepth(0); 
+        
+   GroupSet groups = user.get_MemberOfGroups();
+   Iterator iter = groups.iterator();
+   while (iter.hasNext() == true) 
+   {
+      Group group = (Group) iter.next();
+
+      //устанавливаем права в зависимости от группы
+      if (group.get_DisplayName().equalsIgnoreCase("Readers"))
+      {
+          ap.set_AccessMask(READER_MASK);
+          apList.add(ap);
+          break;
+      }
+      else if (group.get_DisplayName().equalsIgnoreCase("Writers"))
+      {
+         ap.set_AccessMask(WRITER_MASK);
+         apList.add(ap);
+         break;
+      }
+      else if (group.get_DisplayName().equalsIgnoreCase("Admins"))
+      {
+         ap.set_AccessMask(FULL_CONTROL_MASK);
+         apList.add(ap);
+         break;
+      }
+   }
+   
+   doc.set_Permissions(apList);
+   doc.save(RefreshMode.NO_REFRESH);
+
+   return true;
+}
+```
+
 ### Изменение прав
 ### Проверка прав
 ### Описания прав доступа
