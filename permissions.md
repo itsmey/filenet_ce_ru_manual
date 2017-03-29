@@ -30,7 +30,7 @@ CE имеет гибкую модель управления правами до
 `java.lang.Integer get_AccessMask()` |Возвращает значение свойства AccessMask
 `void set_AccessMask(java.lang.Integer value)` |Задает значение свойства AccessMask
 
-* свойство GranteeName определяет полное или краткое имя пользователя или группы
+* свойство GranteeName определяет имя принципала. Для протокола LDAP (см. далее) уникальное имя пользователя (distinguished name) представляет собой строку вида *"CN=OSMI_admin,OU=БД МИ,DC=tn,DC=bunker,DC=ru"*, где CN обозначает имя пользователя, OU - имя отдела, DC - компоненты доменного имени
 * свойство GranteeType определяет, относится ли данное правило к пользователю (SecurityPrincipalType.USER) или группе (SecurityPrincipalType.GROUP). Только для чтения
 * свойство PermissionSource определяет источник данного правила: дефолтные права класса при инстанцировании, наследование от родительского объекта, ручное назначение (подробнее см. [здесь](https://www.ibm.com/support/knowledgecenter/en/SSNW2F_4.5.1/com.ibm.p8.doc/developer_help/content_engine_api/javadocs/com/filenet/api/constants/PermissionSource.html)). Только для чтения
 * свойство InheritableDepth определяет вид наследования прав доступа. Свойство имеет смысл для тех объектов, которые образуют иерархические деревья:
@@ -86,7 +86,9 @@ private static final int LOAN_CREATOR = AccessRight.READ_ACL.getValue() | Access
 
 ## Пользователи и группы
 
-Для работы с иерархией пользователей и групп CE может быть настроен на сервер службы каталогов (directory service), например, Windows Active Directory. Внутри CE пользователи и группы представлены инстансами [User](https://www.ibm.com/support/knowledgecenter/en/SSNW2F_4.5.1/com.ibm.p8.doc/developer_help/content_engine_api/javadocs/com/filenet/api/security/User.html) и [Group](https://www.ibm.com/support/knowledgecenter/en/SSNW2F_4.5.1/com.ibm.p8.doc/developer_help/content_engine_api/javadocs/com/filenet/api/security/Group.html). Им соответствуют фабричные классы [Factory.User](https://www.ibm.com/support/knowledgecenter/en/SSNW2F_4.5.1/com.ibm.p8.doc/developer_help/content_engine_api/javadocs/com/filenet/api/core/Factory.User.html) и [Factory.Group](https://www.ibm.com/support/knowledgecenter/SSNW2F_5.1.0/com.ibm.p8.ce.dev.java.doc/com/filenet/api/core/Factory.Group.html). Эти фабричные классы предназначены только для получнеия инстансов по id, полному или краткому имени. Создавать новые инстансы нельзя.
+CE поддерживает протокол службы каталогов LDAP, а значит, может быть сконфигурирован для работы с сервером LDAP, например, Windows Active Directory. Сервер AD предоставляет иерархию пользователей и групп. Зная информацию о пользователе, работающим в системе, и его группах, CE может управлять его доступом к объектам и правами.
+
+Внутри CE пользователи и группы представлены инстансами [User](https://www.ibm.com/support/knowledgecenter/en/SSNW2F_4.5.1/com.ibm.p8.doc/developer_help/content_engine_api/javadocs/com/filenet/api/security/User.html) и [Group](https://www.ibm.com/support/knowledgecenter/en/SSNW2F_4.5.1/com.ibm.p8.doc/developer_help/content_engine_api/javadocs/com/filenet/api/security/Group.html). Им соответствуют фабричные классы [Factory.User](https://www.ibm.com/support/knowledgecenter/en/SSNW2F_4.5.1/com.ibm.p8.doc/developer_help/content_engine_api/javadocs/com/filenet/api/core/Factory.User.html) и [Factory.Group](https://www.ibm.com/support/knowledgecenter/SSNW2F_5.1.0/com.ibm.p8.ce.dev.java.doc/com/filenet/api/core/Factory.Group.html). Эти фабричные классы предназначены только для получнеия инстансов по id, полному или краткому имени. Создавать новые инстансы нельзя.
 
 Класс Factory.User, кроме того, имеет метод fetchCurrent() для получения текущего пользователя.
 
@@ -110,9 +112,9 @@ private static final int LOAN_CREATOR = AccessRight.READ_ACL.getValue() | Access
 
 ### Назначение прав
 
-Рассмотрим функцию, которая принимает два аргумента: документ и имя пользователя AD, и назначает права пользователя на документ в зависимости от членства в группах Admins, Readers или Editors.
+Рассмотрим функцию, которая принимает два аргумента: документ и имя пользователя, и назначает права пользователя на документ в зависимости от членства в группах Admins, Readers или Editors.
 
-Уникальное имя пользователя (distinguished name) представляет собой строку вида *"CN=OSMI_admin,OU=БД МИ,DC=tn,DC=bunker,DC=ru"*, где CN обозначает имя пользователя, OU - имя отдела, DC - компоненты доменного имени.
+Имя пользователя следует передавать в форме <пользователь или группа>@<домен>, например, *"BDMI_curator@tn.bunker.ru"*.
 
 ```java
 // Определим маски для разных типов доступа - чтение, чтение и запись, полной контроль
@@ -137,7 +139,7 @@ private static final int FULL_CONTROL_MASK = WRITER_MASK |
     AccessRight.WRITE_ACL.getValue() | 
     AccessRight.WRITE_OWNER.getValue();
 
-private boolean setPermissions(Document doc, String userDistinguishedName)
+private boolean setPermissions(Document doc, String userName)
 {
    //пытаемся получить пользователя по уникальному имени
    //инстанс User нам нужен для того, чтобы узнать группы, в которых состоит пользователь
@@ -145,7 +147,7 @@ private boolean setPermissions(Document doc, String userDistinguishedName)
    propertyFilter.addIncludeProperty(new FilterElement(1, null, null, "MemberOfGroups", null));
    User user
    try {
-       user = Factory.User.fetchInstance(doc.getConnection(), userDistinguishedName, propertyFilter);
+       user = Factory.User.fetchInstance(doc.getConnection(), userName, propertyFilter);
    }
    catch (EngineRuntimeException ex) {
        if (ex.getExceptionCode().equals(ExceptionCode.E_OBJECT_NOT_FOUND)) {
@@ -158,7 +160,7 @@ private boolean setPermissions(Document doc, String userDistinguishedName)
    
    //создаём новое правило для добавления в список
    AccessPermission ap = Factory.AccessPermission.createInstance();
-   ap.set_GranteeName(userDistinguishedName);
+   ap.set_GranteeName(userName);
    ap.set_AccessType(AccessType.ALLOW); 
    ap.set_InheritableDepth(0); 
         
