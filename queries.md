@@ -139,6 +139,24 @@ SELECT Id, DocumentTitle, DateCreated, ClassDescription
 
 Этот запрос извлекает данные - знчения свойств Id, DocumentTitle, ClassDescription - из тех инстансов класса Document, которые являются текущими версиями и созданы 10 апреля 2017 года или позднее (по времени сервера). Далее, используя методы fetchObjects() или fetchRows(), можно работать с самими инстансами (у которых в локальном кэше будут выбранные свойства) или с наборами свойств соответственно.
 
+### Экранирование имён свойств
+
+Предположим, у вас есть некий класс Email, в котором определено свойство From. Запрос
+
+```sql
+    SELECT From FROM Email
+```
+
+будет некорректным и вызовет исключение RETRIEVE_SQL_SYNTAX_ERROR. Код SQL регистронезависимый, поэтому CE будет считать, что в запросе два идущих оператора FROM, чего не может быть.
+
+В таких случаях, проблемное свойство нужно экранировать квадратными скобками:
+
+```sql
+    SELECT [From] FROM Email
+```
+
+То же относится и к символическим именам классов.
+
 ### Псевдонимы
 
 Псевдонимы классов могут в некоторых случаях сократить размер строки запроса.
@@ -343,10 +361,10 @@ SELECT d.DocumentTitle, d.DateCreated
 #### Найти подпапки
 
 ```sql
-SELECT f.ObjectType, f.Id, f.FolderName, f.ClassDescription, f.OIID  
-    FROM Folder f 
-    WHERE f.This infolder '/Test' AND f.IsHiddenContainer = false
-    ORDER BY FolderName
+    SELECT f.ObjectType, f.Id, f.FolderName, f.ClassDescription, f.OIID  
+        FROM Folder f 
+        WHERE f.This infolder '/Test' AND f.IsHiddenContainer = false
+        ORDER BY FolderName
 ```
 
 ## Дополнительная информация
