@@ -191,7 +191,7 @@ SELECT d.DocumentTitle, d.DateCreated
 * Object: '=' | '<>' 
 * String: '=' | '<>' '<' | '>' | '<=' | '>=' | LIKE 
 
-Сравнение объектов (значений объектных свойств, а также констант, созаваемых оператором OBJECT()) означет сравнение их Id. Прочие метаданные не учитываются.
+Сравнение объектов (значений объектных свойств, а также констант, создаваемых оператором OBJECT()) означет сравнение их Id. Прочие метаданные не учитываются.
 
 ### Проверка на null
 
@@ -333,6 +333,21 @@ SELECT d.DocumentTitle, d.DateCreated
 Единицы измерения могут быть "second(s)", "minute(s)", "hour(s)", "day(s)".
 
 ### Примеры запросов
+
+#### Найти документ по Id
+
+```sql
+    SELECT DocumentTitle Id FROM Document WHERE Id={4ECDE7D9-F551-4C53-A109-8D81B1DE8577E}
+```
+
+#### Найти подпапки
+
+```sql
+SELECT f.ObjectType, f.Id, f.FolderName, f.ClassDescription, f.OIID  
+    FROM Folder f 
+    WHERE f.This infolder '/Test' AND f.IsHiddenContainer = false
+    ORDER BY FolderName
+```
 
 ## Дополнительная информация
 
