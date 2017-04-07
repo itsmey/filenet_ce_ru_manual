@@ -218,19 +218,19 @@ CE SQL в полном объме поддерживает ANSI/ISO SQL99-сов
 Найти всех женатых мужчин
 
 ```sql
-    SELECT m.Name, w.Name AS NameOfWife
+    SELECT m.Name, w.Name NameOfWife
         FROM Man m INNER JOIN Woman w ON m.This = w.Husband
 ```
 
-Найти всех мужчин и добавить в результат информацию о жене (если жены нет, в свойство Wife запишется null):
+Найти всех мужчин и добавить в результат информацию о жене (если жены нет, в свойство NameOfWife запишется null):
 
 
 ```sql
-    SELECT m.Name, w.Name AS NameOfWife
+    SELECT m.Name, w.Name NameOfWife
         FROM Man m LEFT JOIN Woman w ON m.This = w.Husband
 ```
 
-В этих запросах используется псевдоним для свойства w.Name, чтобы при обработке запроса не возникло путаницы, т.к. оно называется так же, как и m.Name. 
+В этих запросах используется псевдоним NameOfWife для свойства w.Name, чтобы при обработке запроса не возникло путаницы, т.к. оно называется так же, как и m.Name. 
 
 Важно! При использовании SearchScope.fetchObjects() запрос должен быть построен таким образом, чтобы в результат поапдали только свойства из одного класса, иначе возникнет исключение RETRIEVE_ALL_PROPS_FROM_SAME_CLASS. Поэтому для обработки запросов типа JOIN рекомендуется использовать SearchScope.fetchRows().
 
