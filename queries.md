@@ -162,9 +162,9 @@ SELECT Id, DocumentTitle, DateCreated, ClassDescription
 Псевдонимы классов могут в некоторых случаях сократить размер строки запроса.
 
 ```sql
-SELECT d.DocumentTitle, d.DateCreated
-    FROM Document d    -- или FROM Document AS d
-    WHERE d.IsCurrentVersion = true
+    SELECT d.DocumentTitle, d.DateCreated
+        FROM Document d    -- или FROM Document AS d
+        WHERE d.IsCurrentVersion = true
 ```
 
 ### Оператор DISTINCT
@@ -194,7 +194,42 @@ SELECT d.DocumentTitle, d.DateCreated
 
 Сортировать можно только по упорядчиваемым свойствам. К ним не относятся свойства типа Binary и некоторые свойства типа String.
 
+### Оператор TOP
+
+Ограничивает количество записей, возвращаемых запросом. Найти 5 самых ранних имен документов:
+
+```sql
+    SELECT DISTINCT TOP 5 DocumentTitle FROM Document ORDER BY DocumentTitle
+```
+
 ### Оператор JOIN
+
+CE SQL в полном объме поддерживает ANSI/ISO SQL99-совместимый оператор JOIN. Этот оператор позволяет извлекать данные сразу из нескольких классов, если эти классы имеют свойства общего типа.
+
+Общая форма: `SELECT * FROM Class1 JOIN Class2 ON Class1.x = Class2.y` То, что после ON - предикат. Это условие равенства значений свойств из разных классов. 
+
+* [INNER] JOIN - в результат попадают только те объединённые записи, для которых выполняется предикат
+* LEFT [OUTER] JOIN - в результат попадают объединённые записи, а также прочие записи из левого класса (Class1)
+* RIGHT [OUTER] JOIN - в результат попадают объединённые записи, а также прочие записи из правого класса (Class2) 
+* FULL [OUTER] JOIN - в результат попадают объединённые записи, а также прочие записи из обоих классов
+
+Например, у нас есть классы Man и Woman. Класс Woman имеет свойство Husband типа Man, а класс Man, предположим, соответствующего свойства Wife не имеет.
+
+Найти всех женатых мужчин
+
+```sql
+    SELECT m.Name, w.Name AS NameOfWife
+        FROM Man m JOIN Woman w ON m.This = w.Husband
+```
+
+Найти всех мужчин и добавить в результат информацию о жене (если жены нет, в свойство Wife запишется null):
+
+
+```sql
+    SELECT m.Name, w.Name AS NameOfWife
+        FROM Man m LEFT JOIN Woman w ON m.This = w.Husband
+```
+
 
 ### Опрераторы сравнения
 
