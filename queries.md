@@ -159,13 +159,15 @@ SELECT Id, DocumentTitle, DateCreated, ClassDescription
 
 ### Псевдонимы
 
-Псевдонимы классов могут в некоторых случаях сократить размер строки запроса.
+Псевдонимы классов или свойств могут в некоторых случаях сократить размер строки запроса.
 
 ```sql
     SELECT d.DocumentTitle, d.DateCreated
         FROM Document d    -- или FROM Document AS d
         WHERE d.IsCurrentVersion = true
 ```
+
+Особенно полезны псевдонимы при использовании вложенных запросах, а также в запросах типа JOIN.
 
 ### Оператор DISTINCT
 
