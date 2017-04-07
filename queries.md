@@ -107,7 +107,7 @@ while (iterator.hasNext()) {
 
 Здесь свойство DocumentTitle вынесено в запрос, потому что в цикле итератора доступны только данные, но не сам объект.
 
-## Классы и свойтсва, доступные для поиска
+## Классы и свойства, доступные для поиска
 
 В клаузе FROM запроса должен быть идентификатор класса - GUID или имя (свойства Id или SymbolicName объекта ClassDescription). 
 Как правило, доступными для поиска являются не все классы CE, а только подтипы одновременно RepositoryObject и IndependentObject.
@@ -164,6 +164,42 @@ SELECT d.DocumentTitle, d.DateCreated
 Из этого примера мы узнаём следующее:
 * свойство объектного типа This содержит ссылку на сам объект
 * синтаксис GUID в запросах
+
+## IsClass(), IsOfClass(), INCLUDESUBCLASSES, EXCLUDESUBCLASSES
+
+* Функция IsClass(<псевдоним класса>, <id_класса>) позволяет находить инстансы определённого класса:
+
+```sql
+    SELECT Id FROM Document D WHERE IsClass(D,DocSubclass1) OR IsClass(D,DocSubclass2)
+```
+
+Найти инстансы только подклассов Document, но не самого класса Document:
+
+```sql
+    SELECT Id FROM Document D WHERE NOT(IsClass(D, Document))
+```
+
+* функция IsOfClass(<псевдоним класса>, <id класса>) позволяет находить инстансы определённого класса и его подклассов
+
+Найти инстансы Correspondence и его подклассов, исключая инстнсты Email и всех его подклассов
+
+```sql
+    SELECT Title, Author, Text FROM Correspondence c WHERE NOT(IsOfClass(c, Email))
+```
+
+* ключевое слово INCLUDESUBCLASSES означает, что в результаты поиска попадут не только инстансы класса, указанного в клаузе FROM, но и инстансы его подклассов. Используется по умолчанию. Следующие запросы эквивалентны:
+
+```sql
+    SELECT Id FROM Document WHERE DocumentTitle = 'MyDoc'
+    SELECT Id FROM Document WITH INCLUDESUBCLASSES WHERE DocumentTitle = 'MyDoc'
+```
+
+* ключевое слово EXCLUDESUBCLASSES означает, что в результаты поиска попадут только инстансы класса, указанного в клаузе FROM. Следующие запросы эквивалентны:
+
+```sql
+    SELECT Id FROM Document d WHERE DocumentTitle = 'MyDoc' AND ISCLASS (d, Document)
+    SELECT Id FROM Document WITH EXCLUDESUBCLASSES WHERE DocumentTitle = 'MyDoc'
+```
 
 
 ## Дополнительная информация
