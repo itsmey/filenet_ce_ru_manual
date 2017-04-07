@@ -239,13 +239,27 @@ SELECT d.DocumentTitle, d.DateCreated
 
 * <значение> IN <свойство мощности LIST>
 * <значение> IN <список констант>. Список констант имеет вид `(constant1, constant2, constant3,…)`
-* <значение> IN (<подзапрос>). Подзапрос - это SQL-запрос по **одному** свойству. Результаты подзапроса считаются списком, принадлежность к которому проверяется. Исключением является свойство FilterExpression, треюующее собственного подхода (см. [официальную документацию](https://www.ibm.com/support/knowledgecenter/en/SSGLW6_5.2.0/com.ibm.p8.ce.dev.ce.doc/query_sql_syntax_rel_queries.htm), раздел "IN Operator"
+* <значение> IN (<подзапрос>). Подзапрос - это SQL-запрос по **одному** свойству. Результаты подзапроса считаются списком, принадлежность к которому проверяется. Исключением является свойство FilterExpression, требующее собственного подхода (см. [официальную документацию](https://www.ibm.com/support/knowledgecenter/en/SSGLW6_5.2.0/com.ibm.p8.ce.dev.ce.doc/query_sql_syntax_rel_queries.htm), раздел "IN Operator"
 
 Примеры:
 
 ```sql
-    SELECT DocumentTitle FROM Document WHERE DocumentTitle IN ('SomeTitle', 'YetAnotherTitle')
-    SELECT c.ModelNo, c.Name FROM Car c WHERE c.Manufacturer IN (SELECT cm.This FROM CarManufacturer cm WHERE cm.Name = 'Mercedes-Benz')
+    SELECT DocumentTitle 
+        FROM Document 
+        WHERE DocumentTitle IN ('SomeTitle', 'YetAnotherTitle')
+    SELECT c.ModelNo, c.Name 
+        FROM Car c 
+        WHERE c.Manufacturer IN (SELECT cm.This FROM CarManufacturer cm WHERE cm.Name = 'Mercedes-Benz')
+```
+
+### Оператор INTERSECTS
+
+Имеет форму `<список 1> INTERSECTS <список 2>` и становится TRUE, если списки имеют хотя бы один общий элемент. К качестве списков могут быть как списки констант, так и свойства мощности LIST.
+
+```sql
+    SELECT Name, Country, Genres
+        FROM Artist
+        WHERE Genres INTERSECTS ('Jazz Rock', 'Blues Rock', 'Rhytm and Blues') 
 ```
 
 ## Дополнительная информация
