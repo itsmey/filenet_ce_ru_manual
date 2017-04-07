@@ -225,6 +225,29 @@ SELECT d.DocumentTitle, d.DateCreated
     SELECT FolderName FROM Folder WHERE Parent = OBJECT('/root/sub1/sub1a')
 ```
 
+### Сопоставление с образцом для строк
+
+Используя LIKE, можно извлекать строковые свойства по шаблону. Например, найти все документы, у которых название начинается с "doc":
+
+```sql
+    SELECT Id, DocumentTitle FROM Document WHERE DocumentTitle LIKE 'doc%'
+```
+
+### Оператор IN
+
+Предназначен для фильтрации по принадлежности к списку значений. Имеет несколько вариантов использования:
+
+* <значение> IN <свойство мощности LIST>
+* <значение> IN <список констант>. Список констант имеет вид `(constant1, constant2, constant3,…)`
+* <значение> IN (<подзапрос>). Подзапрос - это SQL-запрос по **одному** свойству. Результаты подзапроса считаются списком, принадлежность к которому проверяется. Исключением является свойство FilterExpression, треюующее собственного подхода (см. [официальную документацию](https://www.ibm.com/support/knowledgecenter/en/SSGLW6_5.2.0/com.ibm.p8.ce.dev.ce.doc/query_sql_syntax_rel_queries.htm), раздел "IN Operator"
+
+Примеры:
+
+```sql
+    SELECT DocumentTitle FROM Document WHERE DocumentTitle IN ('SomeTitle', 'YetAnotherTitle')
+    SELECT c.ModelNo, c.Name FROM Car c WHERE c.Manufacturer IN (SELECT cm.This FROM CarManufacturer cm WHERE cm.Name = 'Mercedes-Benz')
+```
+
 ## Дополнительная информация
 
 * [Query syntax](https://www.ibm.com/support/knowledgecenter/en/SSGLW6_5.2.0/com.ibm.p8.ce.dev.ce.doc/query_sql_syntax_rel_queries.htm)
