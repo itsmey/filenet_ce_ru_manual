@@ -149,6 +149,16 @@ SELECT d.DocumentTitle, d.DateCreated
     WHERE d.IsCurrentVersion = true
 ```
 
+### Оператор DISTINCT
+
+### Оператор ORDER BY
+
+### Оператор JOIN
+
+### Опрераторы сравнения
+
+### Проверка на null
+
 ### Операторы INFOLDER, INSUBFOLDER
 
 * INFOLDER позволяет извлекать Containable-объекты, находящиеся в определённой папке, не учитывая подпапки
@@ -261,6 +271,10 @@ SELECT d.DocumentTitle, d.DateCreated
         FROM Artist
         WHERE Genres INTERSECTS ('Jazz Rock', 'Blues Rock', 'Rhytm and Blues') 
 ```
+
+### Функции времени
+
+### Примеры запросов
 
 ## Дополнительная информация
 
