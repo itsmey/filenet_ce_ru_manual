@@ -165,7 +165,7 @@ SELECT d.DocumentTitle, d.DateCreated
 * свойство объектного типа This содержит ссылку на сам объект
 * синтаксис GUID в запросах
 
-## IsClass(), IsOfClass(), INCLUDESUBCLASSES, EXCLUDESUBCLASSES
+### IsClass(), IsOfClass(), INCLUDESUBCLASSES, EXCLUDESUBCLASSES
 
 * Функция IsClass(<псевдоним класса>, <id_класса>) позволяет находить инстансы определённого класса:
 
@@ -184,7 +184,7 @@ SELECT d.DocumentTitle, d.DateCreated
 Найти инстансы Correspondence и его подклассов, исключая инстнсты Email и всех его подклассов
 
 ```sql
-    SELECT Title, Author, Text FROM Correspondence c WHERE NOT(IsOfClass(c, Email))
+    SELECT Title, Author, MessageText FROM Correspondence c WHERE NOT(IsOfClass(c, Email))
 ```
 
 * ключевое слово INCLUDESUBCLASSES означает, что в результаты поиска попадут не только инстансы класса, указанного в клаузе FROM, но и инстансы его подклассов. Используется по умолчанию. Следующие запросы эквивалентны:
@@ -201,6 +201,29 @@ SELECT d.DocumentTitle, d.DateCreated
     SELECT Id FROM Document WITH EXCLUDESUBCLASSES WHERE DocumentTitle = 'MyDoc'
 ```
 
+### ALLACCESSGRANTED()
+
+Функция ALLACCESSGRANTED(<маска доступа>) позволяет искать объекты, на которые пользователь, выполняющий запрос, имеет как минимум те права, которые заданы маской доступа. 
+
+Например, найти только те инстансты, на которые пользователь имеет, среди прочих, права CHANGE_STATE (1024) и DELETE (65536). Суммарная маска для этих двух прав бутет 65560:
+
+```sql
+    SELECT Id FROM MyClass WITH ALLACCESSGRANTED(66560)
+```
+
+### OBJECT()
+
+Функция OBLECT(<идентификатор объекта>) позволяет создать как бы объектную константу, которую можно сравнивать с другим объектным значением. В качестве идентификатора может быть:
+
+* для объектов Folder - полный путь: `OBJECT('/full/path/to/folder')`
+* свойство типа Id: `OBJECT(d.SomeIdProperty)`
+* константа типа Id:  `OBJECT({10F4175A-0000-CB1E-935B-62949727D02A})`
+
+Пример:
+
+```sql
+    SELECT FolderName FROM Folder WHERE Parent = OBJECT('/root/sub1/sub1a')
+```
 
 ## Дополнительная информация
 
