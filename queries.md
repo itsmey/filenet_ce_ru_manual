@@ -43,7 +43,7 @@
 
 ## IndependentObjectSet
 
-Метод SearchScope.fetchObjects() возвращает коллекцию объектов CE - IndependentObjectSet. Этот метод используется тогда, когда нужны не только значения свойств, но и сами объекты - например, для их последующего удаления.
+    Метод SearchScope.fetchObjects() возвращает коллекцию объектов CE - IndependentObjectSet. Этот метод используется тогда, когда нужны не только значения свойств, но и сами объекты - например, для их последующего удаления.
 
 Рассмотрим пример кода:
 
@@ -106,6 +106,22 @@ while (iterator.hasNext()) {
 ```
 
 Здесь свойство DocumentTitle вынесено в запрос, потому что в цикле итератора доступны только данные, но не сам объект.
+
+## Классы, доступные для поиска
+
+В клаузе FROM запроса должен быть идентификатор класса - GUID или имя (свойства Id или SymbolicName объекта ClassDescription). 
+Как правило, доступными для поиска являются не все классы CE, а только подтипы одновременно RepositoryObject и IndependentObject.
+
+Узнать символические имена классов, которые могут быть в клаузе FROM, поможет следующий код:
+
+```java
+SearchScope searchScope = new SearchScope(objectStore);
+ClassDescriptionSet cdSet = searchScope.fetchSearchableClassDescriptions(null, null);
+
+for (Iterator<ClassDescription> i = cdSet.iterator();i.hasNext();) {
+    System.out.println(i.next().get_SymbolicName());
+}
+```
 
 ## Синтаксис CE SQL
 
