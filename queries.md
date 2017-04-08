@@ -118,7 +118,7 @@ while (iterator.hasNext()) {
 SearchScope searchScope = new SearchScope(objectStore);
 ClassDescriptionSet cdSet = searchScope.fetchSearchableClassDescriptions(null, null);
 
-for (Iterator<ClassDescription> i = cdSet.iterator();i.hasNext();) {
+for (Iterator<ClassDescription> i = cdSet.iterator(); i.hasNext();) {
     System.out.println(i.next().get_SymbolicName());
 }
 ```
@@ -132,9 +132,9 @@ for (Iterator<ClassDescription> i = cdSet.iterator();i.hasNext();) {
 Типичный простейший запрос на извлечение определённых данных из некоего класса по заданным условиям:
 
 ```sql
-SELECT Id, DocumentTitle, DateCreated, ClassDescription 
-    FROM Document 
-    WHERE IsCurrentVersion = true AND DateCreated > 2017-04-10T00:00:00Z
+    SELECT Id, DocumentTitle, DateCreated, ClassDescription 
+        FROM Document 
+        WHERE IsCurrentVersion = true AND DateCreated > 2017-04-10T00:00:00Z
 ```
 
 Этот запрос извлекает данные - знчения свойств Id, DocumentTitle, ClassDescription - из тех инстансов класса Document, которые являются текущими версиями и созданы 10 апреля 2017 года или позднее (по времени сервера). Далее, используя методы fetchObjects() или fetchRows(), можно работать с самими инстансами (у которых в локальном кэше будут выбранные свойства) или с наборами свойств соответственно.
@@ -167,7 +167,7 @@ SELECT Id, DocumentTitle, DateCreated, ClassDescription
         WHERE d.IsCurrentVersion = true
 ```
 
-Особенно полезны псевдонимы при использовании вложенных запросах, а также в запросах типа JOIN.
+Особенно полезны псевдонимы при использовании вложенных запросов, а также в запросах типа JOIN.
 
 ### Оператор DISTINCT
 
@@ -191,10 +191,12 @@ SELECT Id, DocumentTitle, DateCreated, ClassDescription
 Пример. Сортировать по заголовку. Документы с одинаковыми заголовками сортировать по дате создания в обратном порядке. Если заголовок не указан, сортировать так, как если бы он был "Не указан":
 
 ```sql
-    SELECT DocumentTitle, DateCreated FROM Document ORDER BY COALESCE(DocumentTitle, 'Не указан'), DateCreated DESC 
+    SELECT DocumentTitle, DateCreated 
+        FROM Document 
+        ORDER BY COALESCE(DocumentTitle, 'Не указан'), DateCreated DESC 
 ```
 
-Сортировать можно только по упорядчиваемым свойствам. К ним не относятся свойства типа Binary и некоторые свойства типа String.
+Сортировать можно только по упорядчиваемым (orderable) свойствам. К ним не относятся свойства типа Binary и некоторые свойства типа String.
 
 ### Оператор TOP
 
@@ -211,9 +213,9 @@ CE SQL в полном объме поддерживает ANSI/ISO SQL99-сов
 Общая форма: `SELECT * FROM Class1 JOIN Class2 ON Class1.x = Class2.y` То, что после ON - предикат. Это условие равенства значений свойств из разных классов. 
 
 * INNER JOIN - в результат попадают только те объединённые записи, для которых выполняется предикат
-* LEFT [OUTER] JOIN - в результат попадают объединённые записи, а также прочие записи из левого класса (Class1)
-* RIGHT [OUTER] JOIN - в результат попадают объединённые записи, а также прочие записи из правого класса (Class2) 
-* FULL [OUTER] JOIN - в результат попадают объединённые записи, а также прочие записи из обоих классов
+* LEFT [OUTER] JOIN - в результат попадают объединённые записи, а также все прочие записи из левого класса (Class1)
+* RIGHT [OUTER] JOIN - в результат попадают объединённые записи, а также все прочие записи из правого класса (Class2) 
+* FULL [OUTER] JOIN - в результат попадают объединённые записи, а также все прочие записи из обоих классов
 
 Например, у нас есть классы Man и Woman. Класс Woman имеет свойство Husband типа Man, а класс Man, предположим, соответствующего свойства Wife не имеет.
 
@@ -234,7 +236,7 @@ CE SQL в полном объме поддерживает ANSI/ISO SQL99-сов
 
 В этих запросах используется псевдоним NameOfWife для свойства w.Name, чтобы при обработке запроса не возникло путаницы, т.к. оно называется так же, как и m.Name. 
 
-Важно! При использовании SearchScope.fetchObjects() запрос должен быть построен таким образом, чтобы в результат поапдали только свойства из одного класса, иначе возникнет исключение RETRIEVE_ALL_PROPS_FROM_SAME_CLASS. Поэтому для обработки запросов типа JOIN рекомендуется использовать SearchScope.fetchRows().
+Важно! При использовании SearchScope.fetchObjects() запрос должен быть построен таким образом, чтобы в результат попадали только свойства из одного класса, иначе возникнет исключение RETRIEVE_ALL_PROPS_FROM_SAME_CLASS. Поэтому для обработки запросов типа JOIN рекомендуется использовать SearchScope.fetchRows().
 
 ### Опрераторы сравнения
 
@@ -351,7 +353,7 @@ CE SQL в полном объме поддерживает ANSI/ISO SQL99-сов
 
 * <значение> IN <свойство мощности LIST>
 * <значение> IN <список констант>. Список констант имеет вид `(constant1, constant2, constant3,…)`
-* <значение> IN (<подзапрос>). Подзапрос - это SQL-запрос по **одному** свойству. Результаты подзапроса считаются списком, принадлежность к которому проверяется. Исключением является свойство FilterExpression, требующее собственного подхода (см. [официальную документацию](https://www.ibm.com/support/knowledgecenter/en/SSGLW6_5.2.0/com.ibm.p8.ce.dev.ce.doc/query_sql_syntax_rel_queries.htm), раздел "IN Operator"
+* <значение> IN (<подзапрос>). Здесь подзапрос - это SQL-запрос по **одному** свойству. Результаты подзапроса считаются списком, принадлежность к которому проверяется. Исключением является свойство FilterExpression, требующее собственного подхода (см. [официальную документацию](https://www.ibm.com/support/knowledgecenter/en/SSGLW6_5.2.0/com.ibm.p8.ce.dev.ce.doc/query_sql_syntax_rel_queries.htm), раздел "IN Operator"
 
 Примеры:
 
@@ -359,6 +361,8 @@ CE SQL в полном объме поддерживает ANSI/ISO SQL99-сов
     SELECT DocumentTitle 
         FROM Document 
         WHERE DocumentTitle IN ('SomeTitle', 'YetAnotherTitle')
+```
+```sql
     SELECT c.ModelNo, c.Name 
         FROM Car c 
         WHERE c.Manufacturer IN (SELECT cm.This FROM CarManufacturer cm WHERE cm.Name = 'Mercedes-Benz')
@@ -366,7 +370,7 @@ CE SQL в полном объме поддерживает ANSI/ISO SQL99-сов
 
 ### Оператор INTERSECTS
 
-Имеет форму `<список 1> INTERSECTS <список 2>` и становится TRUE, если списки имеют хотя бы один общий элемент. К качестве списков могут быть как списки констант, так и свойства мощности LIST.
+Имеет форму `<список 1> INTERSECTS <список 2>` и становится TRUE, если списки имеют хотя бы один общий элемент. В качестве списков могут быть как списки констант, так и свойства мощности LIST.
 
 ```sql
     SELECT Name, Country, Genres
