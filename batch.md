@@ -1,10 +1,10 @@
 # Пакетные операции
 
-В CE есть классы [UpdatingBatch](https://www.ibm.com/support/knowledgecenter/en/SSNW2F_4.5.1/com.ibm.p8.doc/developer_help/content_engine_api/javadocs/com/filenet/api/core/UpdatingBatch.html) и [RetrievingBatch](https://www.ibm.com/support/knowledgecenter/en/SSNW2F_4.5.1/com.ibm.p8.doc/developer_help/content_engine_api/javadocs/com/filenet/api/core/RetrievingBatch.html). Они служат для пакетного изменения или получения объектов. Эти классы имеют общего родителя Batch.
+В CE существуют классы [UpdatingBatch](https://www.ibm.com/support/knowledgecenter/en/SSNW2F_4.5.1/com.ibm.p8.doc/developer_help/content_engine_api/javadocs/com/filenet/api/core/UpdatingBatch.html) и [RetrievingBatch](https://www.ibm.com/support/knowledgecenter/en/SSNW2F_4.5.1/com.ibm.p8.doc/developer_help/content_engine_api/javadocs/com/filenet/api/core/RetrievingBatch.html). Они служат для пакетного изменения или получения объектов. Эти классы имеют общего родителя Batch.
 
 "Пакетный" означает, что действия над группой объектов выполняются единовременно, в одной точке кода (подразумевается код верхнего уровня).
 
-С помощью пакетных операций можно значительно улучшить производительность. Пакетные операции рекомендуется применять, если бизнес-логика допускает разбиение на *независимые* операции над объектами, т.е. внутри "пакета" каждая операция никак не зависит от состояний других объектов и результатов прочих операций.
+С помощью пакетных операций можно значительно улучшить производительность. Пакетные операции рекомендуется применять, если бизнес-логика допускает разбиение на *независимые* операции над объектами, т.е. **внутри "пакета" каждая операция никак не зависит от состояний других объектов и результатов прочих операций**.
 
 * Пакетное изменение транзакционно. Это значит, что либо все операции будут успешными, либо никаких изменений не будет сделано вообще
 * Пакетное получение не транзакционно. Это значит, что для каждого объекта может быть свой результат: успешное обновление свойств либо какое-то исключение
