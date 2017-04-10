@@ -1,15 +1,18 @@
 # Соединение
 
-Здесь будут рассмотрены процесс соединения с сервером CE, получение объекта хранилища данных (ObjectStore), а также типы Connection, UserContext, Domain, ObjectStore, EngineRuntimeException.
+Здесь будут рассмотрены:
+* процесс соединения с сервером CE
+* получение объекта хранилища данных (ObjectStore)
+* типы Connection, UserContext, Domain, ObjectStore, EngineRuntimeException.
 
 ## Исходные данные
 
 Указаны имена переменных из примера кода (см. ниже).
 
-* uri: URI для подключения к CE - String. Пример: "http://172.19.215.15:9080/wsi/FNCEWS40MTOM/"
-* login:  имя пользователя - String
-* password: пароль - String
-* objectStoreName: имя Object Store - String
+* uri: URI для подключения к CE - тип String. Пример: "http://172.19.215.15:9080/wsi/FNCEWS40MTOM/"
+* login:  имя пользователя - тип String
+* password: пароль - тип String
+* objectStoreName: имя Object Store - тип String
 
 Вид URI для подключения к CE зависит от протокола. Для подключения по http (Web Services) изспользуется URI вида http://server:port/wsi/FNCEWS40MTOM/
 
@@ -131,12 +134,12 @@ Connection conn = Factory.Connection.getConnection(uri);
 
 ## ObjectStore
 
-Интерфейс [ObjectStore](https://www.ibm.com/support/knowledgecenter/SSGLW6_5.2.0/com.ibm.p8.ce.dev.java.doc/com/filenet/api/core/ObjectStore.html) предоставляет доступ к хранилищу объектов. Хранилище объектов – база данных, содержащая классы, объекты и метаданные. В пределах домена логически разделённые данные могут храниться в разных хранилищах объектов.
+Интерфейс [ObjectStore](https://www.ibm.com/support/knowledgecenter/SSGLW6_5.2.0/com.ibm.p8.ce.dev.java.doc/com/filenet/api/core/ObjectStore.html) предоставляет доступ к хранилищу объектов. **Хранилище объектов** – база данных, содержащая классы, объекты и метаданные. Хранилище обеспечивает логическое разделение данных в пределах домена.
 
 Существует несколько способов получить объект ObjectStore:
-* Создание нового хранилища – Factory.ObjectStore.createInstance
-* Получение хранилища по ID или имени: Factory.ObjectStore.fetchInstance и Factory.ObjectStore.getInstance
-* Если есть доступ к объекту RepositoryObject – возвращаемое значение метода getObjectStore()
+* Создание нового хранилища – метод Factory.ObjectStore.createInstance()
+* Получение хранилища по ID или имени: методы Factory.ObjectStore.fetchInstance() и Factory.ObjectStore.getInstance()
+* Если есть доступ к объекту типа RepositoryObject – возвращаемое значение метода getObjectStore()
 
 Некоторые методы:
 
