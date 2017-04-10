@@ -7,7 +7,7 @@
 ## Основные положения
 
 * маркировка ([Marking](https://www.ibm.com/support/knowledgecenter/SSNW2F_5.2.0/com.ibm.p8.ce.dev.java.doc/com/filenet/api/security/Marking.html)) - объект, имеющий следующие свойства:
-  * **MarkingValue** - значение маркировки (String). Это значение может принимать свойство, с которым связан набр маркировок (см. далее)
+  * **MarkingValue** - значение маркировки (String). Это значение может принимать свойство, с которым связан набор маркировок (см. далее)
   * **Permissions** - список прав доступа (AccessPermissionList). ACL, которы участвует в вычислении прав доступа объекта, у которого установлена данная маркировка
   * **ConstraintMask** - маска ограничения (Integer) 
 * набор маркировок ([MarkingSet](https://www.ibm.com/support/knowledgecenter/SSNW2F_5.2.1/com.ibm.p8.ce.dev.java.doc/com/filenet/api/security/MarkingSet.html)) - множество маркировок с разными значениями
