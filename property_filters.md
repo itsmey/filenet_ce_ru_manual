@@ -1,6 +1,6 @@
 # Фильтры свойств
 
-Фильтры свойств - мощный и гибкий способ управления тем, какие свойства и из каких объектов нужно извлечь при обращении к хранилищу объектов. Технически этот механизм реализован через методы с аргументами [PropertyFilter](https://www.ibm.com/support/knowledgecenter/en/SSNW2F_5.1.0/com.ibm.p8.ce.dev.java.doc/com/filenet/api/property/PropertyFilter.html):
+**Фильтры свойств** - мощный и гибкий способ управления тем, какие свойства и из каких объектов нужно извлечь при обращении к хранилищу объектов. Технически этот механизм реализован через методы с аргументами [PropertyFilter](https://www.ibm.com/support/knowledgecenter/en/SSNW2F_5.1.0/com.ibm.p8.ce.dev.java.doc/com/filenet/api/property/PropertyFilter.html):
 
 * `IndependentlyPersistableObject.save(RefreshMode refreshMode, PropertyFilter filter)`
 * `IndependentObject.refresh(PropertyFilter filter)`
