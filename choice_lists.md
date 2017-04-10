@@ -20,9 +20,9 @@
 ------------ | ------------- | -------------
 Permissions|AccessPermissionList|Права доступа. По умолчанию список выбора имеет те же права, что и хранилище: полные права для администраторов, чтение свойств для обычных пользователей
 DisplayName|String|Имя списка для UI
+DataType|TypeID|Тип внутреннего значения. Может быть STRING или INTEGER.
 
 
+## Choice
 
-
-
-
+[Choice](https://www.ibm.com/support/knowledgecenter/SSNW2F_5.2.1/com.ibm.p8.ce.dev.java.doc/com/filenet/api/admin/Choice.html#get_ChoiceValues()) - элемент варианта.
