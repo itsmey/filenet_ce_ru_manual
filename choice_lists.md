@@ -126,3 +126,52 @@ objChoiceListInt.save(RefreshMode.REFRESH);
 ```
 
 Сохраненный список выбора будет принадлежать хранилищу - коллекции ChoiceListSet, возвращаемой методом ObjectStore.get_ChoiceLists().
+
+### Связывание списка выбора с шаблоном свойства
+
+Напишем функцию, принимающую объект ObjectStore, имя шаблона и список выбора, и связывающую шаблон со списком:
+
+```java
+public static boolean bindChoiceList(ObjectStore objectStore, String propertyTemplateName, ChoiceList choiceList) {
+    Iterator iter = objectStore.get_PropertyTemplates().iterator();
+    PropertyTemplate objPropertyTemplate = null;
+    
+    while (iter.hasNext())
+    {
+       objPropertyTemplate = (PropertyTemplate) iter.next();
+       prpSymbolicName = objPropertyTemplate.get_SymbolicName();
+
+       if (prpSymbolicName.equalsIgnoreCase(propertyTemplateName))
+       {
+          objPropertyTemplate.set_ChoiceList(objChoiceList);
+          objPropertyTemplate.save(RefreshMode.REFRESH);
+          
+          return true;
+       }
+    }
+    
+    return false;
+}
+```
+
+### Отмена связи со списком выбора
+
+Если определение свойства должны быть отвязаны от списка выбора, это можно сделать следующим образом:
+
+```java
+    objPropertyDefinition.set_ChoiceList(null);
+
+    //сохраняем определение класса, в котором было это определение свойства
+    objClassDefinition.save(RefreshMode.REFRESH);
+```
+
+Отвязываение шаблона свойства:
+
+```java
+    objPropertyTemplate.set_ChoiceList(null);
+    objPropertyTemplate.save(RefreshMode.REFRESH);
+```
+
+## Дополнительная информация
+
+* [Working with choice lists](https://www.ibm.com/support/knowledgecenter/SSNW2F_5.2.1/com.ibm.p8.ce.dev.ce.doc/choicelist_procedures.htm)
