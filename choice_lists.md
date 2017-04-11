@@ -69,7 +69,6 @@ ChoiceValues|com.filenet.api.collection.ChoiceList|Коллекция элеме
 2. Создать пустой список com.filenet.api.collection.ChoiceList при помощи метода Factory.Choice.createList() и добавить в список ранее созданные элементы выбора
 3. Создать объект com.filenet.api.admin.ChoiceList при помощи метода Factory.ChoiceList.createInstance()
 4. Установить свойство ChoiceValues объекта ChoiceList 
-5. Добавить объект ChoiceList в список списков выбора хранилища объектов
 
 Рассмотрим на примере списка выбора типа Integer:
 
