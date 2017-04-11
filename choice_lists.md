@@ -58,4 +58,71 @@ ChoiceValues|com.filenet.api.collection.ChoiceList|Коллекция элеме
 
 Кроме того, список выбора можно связать с определением свойства напрямую.
 
+## Примеры
 
+### Создание списка выбора
+
+1. Создать необходимые элементы выбора Choice при момощи метода Factory.Choice.createInstance(). У каждого объекта Choice заполнить свойства
+* ChoiceType
+* DisplayName (если не используется локализация) или DisplayNames (если используется)
+* ChoiceIntegerValue или ChoiceStringValue, в зависимости от установленного ранее ChoiceType
+2. Создать пустой список com.filenet.api.collection.ChoiceList при помощи метода Factory.Choice.createList() и добавить в список ранее созданные элементы выбора
+3. Создать объект com.filenet.api.admin.ChoiceList при помощи метода Factory.ChoiceList.createInstance()
+4. Установить свойство ChoiceValues объекта ChoiceList 
+5. Добавить объект ChoiceList в список списков выбора хранилища объектов
+
+Рассмотрим на примере списка выбора типа Integer:
+
+```java
+// создать элементы варианта
+Choice objChoiceMidInt1 = Factory.Choice.createInstance();
+objChoiceMidInt1.set_ChoiceType(ChoiceType.INTEGER);
+objChoiceMidInt1.set_DisplayName("Seattle");
+objChoiceMidInt1.set_ChoiceIntegerValue(11);
+
+Choice objChoiceMidInt2 = Factory.Choice.createInstance();
+objChoiceMidInt2.set_ChoiceType(ChoiceType.INTEGER);
+objChoiceMidInt2.set_DisplayName("Kirkland");
+objChoiceMidInt2.set_ChoiceIntegerValue(12);
+
+Choice objChoiceMidInt3 = Factory.Choice.createInstance();
+objChoiceMidInt3.set_ChoiceType(ChoiceType.INTEGER);
+objChoiceMidInt3.set_DisplayName("Bellevue");
+objChoiceMidInt3.set_ChoiceIntegerValue(13);
+
+// создаём и заполняем группу элементов варианта
+Choice objChoiceInt1 = Factory.Choice.createInstance();
+objChoiceInt1.set_ChoiceType(ChoiceType.MIDNODE_INTEGER);
+objChoiceInt1.set_DisplayName("Washington");
+objChoiceInt1.set_ChoiceValues(Factory.Choice.createList());
+objChoiceInt1.get_ChoiceValues().add(objChoiceMidInt1);
+objChoiceInt1.get_ChoiceValues().add(objChoiceMidInt2);
+objChoiceInt1.get_ChoiceValues().add(objChoiceMidInt3);
+objChoiceInt1.set_ChoiceIntegerValue(1);
+
+Choice objChoiceInt2 = Factory.Choice.createInstance();
+objChoiceInt2.set_ChoiceType(ChoiceType.INTEGER);
+objChoiceInt2.set_DisplayName("Oregon");
+objChoiceInt2.set_ChoiceIntegerValue(2);
+
+Choice objChoiceInt3 = Factory.Choice.createInstance();
+objChoiceInt3.set_ChoiceType(ChoiceType.INTEGER);
+objChoiceInt3.set_DisplayName("California");
+objChoiceInt3.set_ChoiceIntegerValue(3);
+
+// создаём список выбора целочисленного типа
+com.filenet.api.admin.ChoiceList objChoiceListInt = Factory.ChoiceList.createInstance(objObjectStore);
+objChoiceListInt.set_DataType(TypeID.LONG);
+
+// добавляем в него элементы варианта и задаём необходимые свойства
+objChoiceListInt.set_ChoiceValues(Factory.Choice.createList());
+objChoiceListInt.get_ChoiceValues().add(objChoiceInt1);
+objChoiceListInt.get_ChoiceValues().add(objChoiceInt2);
+objChoiceListInt.get_ChoiceValues().add(objChoiceInt3);
+objChoiceListInt.set_DisplayName("Integer State List");
+
+//сохраняем
+objChoiceListInt.save(RefreshMode.REFRESH);
+```
+
+Сохраненный список выбора будет принадлежать хранилищу - коллекции ChoiceListSet, возвращаемой методом ObjectStore.get_ChoiceLists().
