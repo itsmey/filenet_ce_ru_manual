@@ -37,6 +37,8 @@ document.fetchProperties(new String[] {"DocumentTitle", "DateCreated"});
 document.save(RefreshMode.REFRESH, filter);
 ```
 
+**ВАЖНО**: фильтр свойств, созданный конструктором и больше не менявшийся, соответствует не пустому, а наиболее полному фильтру, т.е. ```new PropertyFilter()``` в качестве параметра метода эквивалентен ```null```.
+
 Основные методы PropertyFilter:
 
 метод | что делает
