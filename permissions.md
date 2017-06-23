@@ -290,6 +290,14 @@ for (Object apdObject : permissionsDespriptions)
 * LEVEL - готовый набор прав, соответствующий определённому уровню доступа
 * LEVEL_DEFAULT - набор прав по умолчанию для новых правил
 
+### AccessLevel
+
+Вспомогательный класс [AccessLevel](https://www.ibm.com/support/knowledgecenter/en/SSGLW6_5.2.1/com.ibm.p8.ce.dev.java.doc/com/filenet/api/constants/AccessLevel.html) содержит константы маск доступа, соответствующие различным наборам прав для различных задач.
+
+К примеру, битовая маска доступа AccessLevel.VIEW.getValue() является объединением AccessRight.VIEW_CONTENT.getValue() | AccessLevel.READ.getValue() и означает, что ползьзователь может просматривать свойства документа и его элементы содержимого.
+
+**Важно!** Класс *AccessLevel* отмечен в официальной документации как устаревший (deprecated), он может быть изменён/удалён в следующих версиях FileNet CE. Использовать его не рекомендуется.
+
 ## Дополнительная информация
 
 * [Working with security](https://www.ibm.com/support/knowledgecenter/en/SSGLW6_5.2.1/com.ibm.p8.ce.dev.ce.doc/sec_procedures.htm)
