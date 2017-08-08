@@ -52,7 +52,7 @@
 
 ## Привязка набора маркировок к свойству
 
-Как уже было сказано, наборы маркировок определяются на уровне домена. Каждое хранилище в домене может использовать наборы домена. Домен имеет свойство **MarkingSetSet** - коллекция, содержащая все наборы маркировок.
+Как уже было сказано, наборы маркировок определяются на уровне домена. Каждое хранилище в домене может использовать наборы домена. Домен имеет свойство **MarkingSets** - коллекция, содержащая все наборы маркировок.
 
 Шаблон свойства типа String (PropertyTemplateString) имеет свойство **Marking** типа MarkingSet. Через это свойство можно связать шаблон с определенным набором маркировок.
 
@@ -62,36 +62,37 @@
 
 ```java
 // СОЗДАНИЕ НАБОРА МАРКИРОВОК
+
 // сначала создадим набор разрешений для маркировки
-AccessPermissionList permissions = Factory.AccessPermission.createList()
+AccessPermissionList permissions = Factory.AccessPermission.createList();
 
 // одно правило для одного пользователя
-AccessPermission permission = Factory.AccessPermission.createInstance()
-permission.set_GranteeName("admin@my.domain.ru")
-permission.set_AccessType(AccessType.ALLOW)
-permission.set_AccessMask(AccessRight.ADD_MARKING.getValue() | AccessRight.REMOVE_MARKING.getValue() | AccessRight.USE_MARKING.getValue())
+AccessPermission permission = Factory.AccessPermission.createInstance();
+permission.set_GranteeName("admin@my.domain.ru");
+permission.set_AccessType(AccessType.ALLOW);
+permission.set_AccessMask(AccessRight.ADD_MARKING.getValue() | AccessRight.REMOVE_MARKING.getValue() | AccessRight.USE_MARKING.getValue());
 
 // аналогичным образом создаются правила для других юзеров
 // ...
 
 // добавляем правила в набор
-permissions.add(permission)
+permissions.add(permission);
 // ...
 
 // создаем маркировку
-Marking readOnlyMarking = Factory.Marking.createInstance()
-readOnlyMarking.set_MarkingValue("Только чтение")
-readOnlyMarking.set_Permissions(permissions)
-readOnlyMarking.set_ConstraintMask(AccessRight.DELETE.getValue() | AccessRight.WRITE.getValue())
+Marking readOnlyMarking = Factory.Marking.createInstance();
+readOnlyMarking.set_MarkingValue("Только чтение");
+readOnlyMarking.set_Permissions(permissions);
+readOnlyMarking.set_ConstraintMask(AccessRight.DELETE.getValue() | AccessRight.WRITE.getValue());
 
 // таким же образом создаем и другие маркировки
 // ...
 
 // создаем набор маркировок
-MarkingSet markingSet = Factory.MarkingSet.createInstance((objectStore.get_Domain())
+MarkingSet markingSet = Factory.MarkingSet.createInstance(objectStore.get_Domain());
 
 // добавляем маркировки в набор
-markingSet.get_Markings().add(readOnlyMarking)
+markingSet.get_Markings().add(readOnlyMarking);
 // ...
 
 markingSet.save(RefreshMode.NO_REFRESH)
@@ -100,26 +101,26 @@ markingSet.save(RefreshMode.NO_REFRESH)
 
 // создадим новый шаблон свойства для нашего набора маркировок
 // (это необязательно - можно привязать набор маркировок к существующему шаблону)
-PropertyTemplate template = Factory.PropertyTemplateString.createInstance(objectStore())
-template.set_SymbolicName("NewProperty")
-LocalizedStringList nameList = Factory.LocalizedString.createList()
-LocalizedString name = Factory.LocalizedString.createInstance()
-name.set_LocaleName("ru")
-name.set_LocalizedText("Новое свойство")
-nameList.add(name)
-template.set_DisplayNames(nameList)
-template.set_Settability(PropertySettability.READ_WRITE)
-template.set_Cardinality(Cardinality.SINGLE)
-template.set_MarkingSet(markingSet) //здесь связываем набор маркировок и шаблон
-template.save(RefreshMode.NO_REFRESH)
+PropertyTemplate template = Factory.PropertyTemplateString.createInstance(objectStore());
+template.set_SymbolicName("NewProperty");
+LocalizedStringList nameList = Factory.LocalizedString.createList();
+LocalizedString name = Factory.LocalizedString.createInstance();
+name.set_LocaleName("ru");
+name.set_LocalizedText("Новое свойство");
+nameList.add(name);
+template.set_DisplayNames(nameList);
+template.set_Settability(PropertySettability.READ_WRITE);
+template.set_Cardinality(Cardinality.SINGLE);
+template.set_MarkingSet(markingSet); //здесь связываем набор маркировок и шаблон
+template.save(RefreshMode.NO_REFRESH);
 
-// получим определение класса, объекты которого должны получить маркировки
-ClassDefinition classDef = Factory.ClassDefinition.fetchInstance(objectStore(), "SomeClass", null)
+// получим определение класса, объекты которого должны обладать маркировками
+ClassDefinition classDef = Factory.ClassDefinition.fetchInstance(objectStore(), "SomeClass", null);
 
 //добавим к определением свойств класса новое, произведенное из шаблона
-classDef.get_PropertyDefinitions().add(template.createClassProperty())
+classDef.get_PropertyDefinitions().add(template.createClassProperty());
 
-classDef.save(RefreshMode.NO_REFRESH)
+classDef.save(RefreshMode.NO_REFRESH);
 ```
 
 
