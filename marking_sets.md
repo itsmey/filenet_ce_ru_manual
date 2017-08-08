@@ -48,7 +48,7 @@
 
 `int get_MarkingUseGranted()`
 
-возвращает маску прав на маркировку для пользователя, от чьего имени вызывается метод. В маске могут быть установлены биты ADD_MARKING, REMOVE_MARKING, USE_MARKING.
+возвращает маску прав на маркировку для пользователя, от чьего имени вызывается метод. В маске могут быть установлены биты ADD_MARKING, REMOVE_MARKING, USE_MARKING. Этот метод в чём-то аналогичен `IndependentlyPersistableObject.getAccessAllowed()`.
 
 ## Основные положения
 
