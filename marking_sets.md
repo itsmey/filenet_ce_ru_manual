@@ -41,7 +41,7 @@
 ------------ | -------------
 `Id Id` | Идентификатор маркировки. Нельзя изменить
 `String MarkingValue` |Значение маркировки, например, "Только чтение"
-`int ConstraintMask` |Битовая маска ограничения. "1" в определенном месте означает, что это право необходимо исключить ([вычесть](https://www.ibm.com/support/knowledgecenter/SSNW2F_5.2.0/com.ibm.p8.ce.dev.prop.doc/props_Marking.htm#MarkingUseGranted)) для пользователя, использующего маркировку. См. AccessRight
+`int ConstraintMask` |Битовая маска ограничения. "1" в определенном месте означает, что это право необходимо исключить ([вычесть](https://www.ibm.com/support/knowledgecenter/SSNW2F_5.2.0/com.ibm.p8.ce.dev.prop.doc/props_Marking.htm#MarkingUseGranted)) для пользователя, не использующего маркировку. См. AccessRight
 `AccessPermissionList Permissions` |Список прав доступа, определяющий, что и какие пользователи могут делать с этой маркировкой. Состоит из правил AccessPermission, которые рассмотрены [здесь](permissions.md). В битовых масках правил имеют смысл только три бита: ADD_MARKING (может ли пользователь назначить эту маркировку), REMOVE_MARKING (сможет ли снять ее) и USE_MARKING (может ли использовать объект с такой маркировкой)
 
 Метод
@@ -50,31 +50,76 @@
 
 возвращает маску прав на маркировку для пользователя, от чьего имени вызывается метод. В маске могут быть установлены биты ADD_MARKING, REMOVE_MARKING, USE_MARKING. Этот метод в чём-то аналогичен `IndependentlyPersistableObject.getAccessAllowed()`.
 
-## Основные положения
+## Привязка набора маркировок к свойству
 
-* маркировка ([Marking](https://www.ibm.com/support/knowledgecenter/SSNW2F_5.2.0/com.ibm.p8.ce.dev.java.doc/com/filenet/api/security/Marking.html)) - объект, имеющий следующие свойства:
-  * **MarkingValue** - значение маркировки (String). Это значение может принимать свойство, с которым связан набор маркировок (см. далее)
-  * **Permissions** - список прав доступа (AccessPermissionList). ACL, которы участвует в вычислении прав доступа объекта, у которого установлена данная маркировка
-  * **ConstraintMask** - маска ограничения (Integer) 
-* набор маркировок ([MarkingSet](https://www.ibm.com/support/knowledgecenter/SSNW2F_5.2.1/com.ibm.p8.ce.dev.java.doc/com/filenet/api/security/MarkingSet.html)) - множество маркировок с разными значениями
-* наборы маркировок определяются на уровне домена. Каждое хранилище в домене может использовать наборы домена. Домен (Domain) имеет свойство **MarkingSetSet** - коллекция, содержащая все наборы маркировок
-* шаблон свойства типа String (PropertyTemplateString) имеет свойство **Marking** типа MarkingSet. Через это свойство можно связать шаблон с определенным набором маркировок 
-* шаблон свойства имеет метод createClassProperty(), производящий определение свойства (ClassDefinition). Определение свойства может быть добавлено к определению класса (ClassDefinition). Соответсвенно, доступ к инстансам таких классов зависит уже не только от свойства Permissions, и от свойства типа String, которое было связано с набором маркировок
+Как уже было сказано, наборы маркировок определяются на уровне домена. Каждое хранилище в домене может использовать наборы домена. Домен имеет свойство **MarkingSetSet** - коллекция, содержащая все наборы маркировок.
 
-## Определение итоговой маски
+Шаблон свойства типа String (PropertyTemplateString) имеет свойство **Marking** типа MarkingSet. Через это свойство можно связать шаблон с определенным набором маркировок.
 
-Рассмотрим алгоритм получения итоговой маски, т.е. той, по которой CE предоставит доступ пользователю или группе к объекту:
+Шаблон свойства имеет метод createClassProperty(), производящий определение свойства (ClassDefinition). Определение свойства может быть добавлено к определению класса (ClassDefinition). Теперь на объекты этих классов можно назначать маркировки.
 
-1. Пользователь запрашивает доступ к объекту
-2. По свойству Permissions CE вычисляет "маску, определяемую ACL"
-3. По свойствам, связанным с наборами маркировок, вычисляется "маска, определяемая маркировками". Для её вычисления используются свойства Permissions заданных значений маркировок. Если пользователь отсутствует в ACL, используется ConstraintMask данной маркировки
-4. Итоговая маска определяется как логическое умножение ("И") "маски, определяемой ACL" и "маски, определяемой маркировками"
+Рассмотрим пример кода (*примеч. автора: пример не компилировался, это примерный набросок*):
 
-## Типичный пример
+```java
+// СОЗДАНИЕ НАБОРА МАРКИРОВОК
+// сначала создадим набор разрешений для маркировки
+AccessPermissionList permissions = Factory.AccessPermission.createList()
 
-Типичный пример использования маркировок - гриф документа. Маркировки этого набора иметь такие значения:
+// одно правило для одного пользователя
+AccessPermission permission = Factory.AccessPermission.createInstance()
+permission.set_GranteeName("admin@my.domain.ru")
+permission.set_AccessType(AccessType.ALLOW)
+permission.set_AccessMask(AccessRight.ADD_MARKING.getValue() | AccessRight.REMOVE_MARKING.getValue() | AccessRight.USE_MARKING.getValue())
 
-* **"Соверенно секретно"** - доступ только для высшего руководства
-* **"Конфиденциально"** - доступ только для руководителей
-* **"Внутренний"** - доступ для всех сотрудников комании
-* **"Внешний"** - доступ для всех
+// аналогичным образом создаются правила для других юзеров
+// ...
+
+// добавляем правила в набор
+permissions.add(permission)
+// ...
+
+// создаем маркировку
+Marking readOnlyMarking = Factory.Marking.createInstance()
+readOnlyMarking.set_MarkingValue("Только чтение")
+readOnlyMarking.set_Permissions(permissions)
+readOnlyMarking.set_ConstraintMask(AccessRight.DELETE.getValue() | AccessRight.WRITE.getValue())
+
+// таким же образом создаем и другие маркировки
+// ...
+
+// создаем набор маркировок
+MarkingSet markingSet = Factory.MarkingSet.createInstance((objectStore.get_Domain())
+
+// добавляем маркировки в набор
+markingSet.get_Markings().add(readOnlyMarking)
+// ...
+
+markingSet.save(RefreshMode.NO_REFRESH)
+
+// ПРИВЯЗКА К СВОЙСТВУ
+
+// создадим новый шаблон свойства для нашего набора маркировок
+// (это необязательно - можно привязать набор маркировок к существующему шаблону)
+PropertyTemplate template = Factory.PropertyTemplateString.createInstance(objectStore())
+template.set_SymbolicName("NewProperty")
+LocalizedStringList nameList = Factory.LocalizedString.createList()
+LocalizedString name = Factory.LocalizedString.createInstance()
+name.set_LocaleName("ru")
+name.set_LocalizedText("Новое свойство")
+nameList.add(name)
+template.set_DisplayNames(nameList)
+template.set_Settability(PropertySettability.READ_WRITE)
+template.set_Cardinality(Cardinality.SINGLE)
+template.set_MarkingSet(markingSet) //здесь связываем набор маркировок и шаблон
+template.save(RefreshMode.NO_REFRESH)
+
+// получим определение класса, объекты которого должны получить маркировки
+ClassDefinition classDef = Factory.ClassDefinition.fetchInstance(objectStore(), "SomeClass", null)
+
+//добавим к определением свойств класса новое, произведенное из шаблона
+classDef.get_PropertyDefinitions().add(template.createClassProperty())
+
+classDef.save(RefreshMode.NO_REFRESH)
+```
+
+
