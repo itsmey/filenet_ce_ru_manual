@@ -30,6 +30,7 @@
 ## В CE
 
 Наборы маркировок определяются на уровне домена (Domain):
+
 `MarkingSetSet get_MarkingSets()`
 
 Коллекция MarkingSetSet состоит из наборов маркировок [MarkingSet](https://www.ibm.com/support/knowledgecenter/SSNW2F_5.2.1/com.ibm.p8.ce.dev.java.doc/com/filenet/api/security/MarkingSet.html). MarkingSet, в свою очередь, состоит из маркировок [Marking](https://www.ibm.com/support/knowledgecenter/SSNW2F_5.2.0/com.ibm.p8.ce.dev.java.doc/com/filenet/api/security/Marking.html)
@@ -40,11 +41,13 @@
 ------------ | -------------
 `Id Id` | Идентификатор маркировки. Нельзя изменить
 `String MarkingValue` |Значение маркировки, например, "Только чтение"
-`int ConstraintMask` |Битовая маска ограничения. "1" в определенном месте означает, что это право необходимо исключить для пользователя, использующего маркировку. См. AccessRight
+`int ConstraintMask` |Битовая маска ограничения. "1" в определенном месте означает, что это право необходимо исключить ([вычесть](https://www.ibm.com/support/knowledgecenter/SSNW2F_5.2.0/com.ibm.p8.ce.dev.prop.doc/props_Marking.htm#MarkingUseGranted)) для пользователя, использующего маркировку. См. AccessRight
 `AccessPermissionList Permissions` |Список прав доступа, определяющий, что и какие пользователи могут делать с этой маркировкой. Состоит из правил AccessPermission, которые рассмотрены [здесь](permissions.md). В битовых масках правил имеют смысл только три бита: ADD_MARKING (может ли пользователь назначить эту маркировку), REMOVE_MARKING (сможет ли снять ее) и USE_MARKING (может ли использовать объект с такой маркировкой)
 
 Метод
-`int get_MarkingUseGranted()' 
+
+`int get_MarkingUseGranted()`
+
 возвращает маску прав на маркировку для пользователя, от чьего имени вызывается метод. В маске могут быть установлены биты ADD_MARKING, REMOVE_MARKING, USE_MARKING.
 
 ## Основные положения
